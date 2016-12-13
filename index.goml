@@ -1,0 +1,32 @@
+<goml width="512" height="512">
+  <!-- <import-material typeName="pe" src="./pe.sort"/> -->
+  <import-material typeName="phong" src="./index.sort"/>
+  <material id="main" type="phong" color="#933" sun="n(1,-1.1,-1.2)" power="14" specular="#888" ambient="#001"/>
+  <geometry type="torus" name="torus"></geometry>
+  <geometry type="torus" name="torus-small" irad="0.2"></geometry>
+  <geometry type="torus" name="torus-big" irad="0.8"></geometry>
+  <renderer camera=".camera" viewport="0,0,512,512">
+    <render-buffer name="rb"/>
+    <texture-buffer name="bb1"/>
+    <texture-buffer name="bb2"/>
+    <texture-buffer name="bb3"/>
+    <texture-buffer name="bb4"/>
+    <render-scene out="bb1" depthBuffer="rb"/>
+    <render-fxaa id="fxaa" source="backbuffer(bb1)" out="bb2"/>
+    <render-hud id="hud" source="backbuffer(bb2)" out="bb3" texture="sushi.png"/>
+    <render-aberration id="aberration" source="backbuffer(bb3)" out="bb4" power="2.0" coef="3.4"/>
+    <render-vignetting id="vignetting" source="backbuffer(bb4)" out="default" spread="0.9" size="0.7"/>
+  </renderer>
+  <scene>
+    <camera class="camera" near="0.01" far="100.0" position="0,0,13">
+      <camera.components>
+        <MouseCameraControl moveSpeed="1" center="13"/>
+      </camera.components>
+    </camera>
+    <mesh position="1,1,4" geometry="torus-small" material="#main" rotation="40,0,10">
+    </mesh>
+    <!-- <mesh position="0,0,0" geometry="torus" material="#main" rotation="20,0,10"></mesh> -->
+    <mesh position="-1,-1,-8" geometry="torus-big" material="#main" rotation="-80,0,-10">
+    </mesh>
+  </scene>
+</goml>

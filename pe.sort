@@ -1,0 +1,36 @@
+@Pass
+@NoBlend()
+@NoDepth()
+FS_PREC(mediump,float)
+
+varying vec2 vTexCoord;
+
+#ifdef VS
+  attribute vec3 position;
+  attribute vec2 texCoord;
+  void main(){
+    gl_Position = vec4(position, 1.);
+    vTexCoord = texCoord;
+  }
+#endif
+
+#ifdef FS
+  uniform sampler2D source;
+  uniform sampler2D texture;
+  uniform vec2 _viewportSize;
+  @{default:"false"}
+  uniform bool pass;
+
+  vec4 alphaBlend(vec4 base, vec4 blend) {
+    return vec4(base.rgb * base.a * (1.0 - blend.a) + blend.rgb * blend.a, blend.a + base.a * (1.0 - blend.a));
+  }
+
+  void main() {
+    vec2 iTexCoord = vec2(1., -1.) * vTexCoord;
+    if (!pass) {
+      gl_FragColor = alphaBlend(texture2D(source, iTexCoord), texture2D(texture, vTexCoord));
+    } else {
+      gl_FragColor = texture2D(source, iTexCoord);
+    }
+  }
+#endif
