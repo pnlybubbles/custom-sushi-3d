@@ -1,10 +1,11 @@
 <goml width="512" height="512">
-  <!-- <import-material typeName="pe" src="./pe.sort"/> -->
+  <geometry type="div-cube" name="neta" div="10,1,1"/>
+  <geometry type="div-cube" name="come" div="1,1,1"/>
+  <geometry type="cone" name="cone"/>
   <import-material typeName="phong" src="./index.sort"/>
-  <material id="main" type="phong" color="#933" sun="n(1,-1.1,-1.2)" power="14" specular="#888" ambient="#001"/>
-  <geometry type="torus" name="torus"></geometry>
-  <geometry type="torus" name="torus-small" irad="0.2"></geometry>
-  <geometry type="torus" name="torus-big" irad="0.8"></geometry>
+  <import-material typeName="neta" src="./neta.sort"/>
+  <material id="neta-material" type="neta" color="#c55" sun="n(1,-1.1,-1.2)" power="11" specular="#888" ambient="#001"/>
+  <material id="come-material" type="phong" color="#fff" sun="n(1,-1.1,-1.2)" power="4" specular="#888" ambient="#001"/>
   <renderer camera=".camera" viewport="0,0,512,512">
     <render-buffer name="rb"/>
     <texture-buffer name="bb1"/>
@@ -13,8 +14,8 @@
     <texture-buffer name="bb4"/>
     <render-scene out="bb1" depthBuffer="rb"/>
     <render-fxaa id="fxaa" source="backbuffer(bb1)" out="bb2"/>
-    <render-hud id="hud" source="backbuffer(bb2)" out="bb3" texture="sushi.png"/>
-    <render-aberration id="aberration" source="backbuffer(bb3)" out="bb4" power="2.0" coef="3.4"/>
+    <render-hud id="hud" source="backbuffer(bb2)" out="bb3" texture="sushi.png" pass="true"/>
+    <render-aberration id="aberration" source="backbuffer(bb3)" out="bb4" power="2.0" coef="3.4" pass="true"/>
     <render-vignetting id="vignetting" source="backbuffer(bb4)" out="default" spread="0.9" size="0.7"/>
   </renderer>
   <scene>
@@ -23,10 +24,11 @@
         <MouseCameraControl moveSpeed="1" center="13"/>
       </camera.components>
     </camera>
-    <mesh position="1,1,4" geometry="torus-small" material="#main" rotation="40,0,10">
-    </mesh>
-    <!-- <mesh position="0,0,0" geometry="torus" material="#main" rotation="20,0,10"></mesh> -->
-    <mesh position="-1,-1,-8" geometry="torus-big" material="#main" rotation="-80,0,-10">
-    </mesh>
+    <mesh id="neta" geometry="neta" material="#neta-material" position="0,0,0" scale="2.2,0.2,1" targetBuffer="default"></mesh>
+    <object id="come" position="0,-1.2,0" scale="1.3,1,0.9">
+      <mesh geometry="come" material="#come-material" position="0,0.5,0" scale="1,0.5,1" targetBuffer="default"></mesh>
+    </object>
+    <!-- <mesh geometry="sphere" position="1,1,1" material="#come" scale="1,0.2,1"></mesh> -->
+    <!-- <mesh geometry="sphere" position="3,1,1" material="#come" scale="1,5,1"></mesh> -->
   </scene>
 </goml>

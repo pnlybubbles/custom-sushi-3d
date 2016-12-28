@@ -79,67 +79,67 @@ function torusAABB(irad, orad) {
   return new AABB([new Vector3(orad * 1.4142, orad - irad, orad * 1.4142), new Vector3(-orad * 1.4142, irad - orad, -orad * 1.4142)]);
 }
 
-GeometryFactory.addType('torus', {
-  row: {
-    converter: 'Number',
-    defaultValue: 32,
-  },
-  column: {
-    converter: 'Number',
-    defaultValue: 32,
-  },
-  irad: {
-    converter: 'Number',
-    defaultValue: 0.5,
-  },
-  orad: {
-    converter: 'Number',
-    defaultValue: 1.0,
-  },
-}, (gl, attrs) => {
-  return GeometryBuilder.build(gl, {
-    indicies: {
-      default: {
-        generator: function* () {
-          yield* torusIndex(attrs.row, attrs.column);
-        },
-        topology: WebGLRenderingContext.TRIANGLES,
-      },
-      wireframe: {
-        generator: function* () {
-          yield* GeometryUtility.linesFromTriangles(torusIndex(attrs.row, attrs.column));
-        },
-        topology: WebGLRenderingContext.LINES,
-      },
-    },
-    verticies: {
-      main: {
-        size: {
-          position: 3,
-          normal: 3,
-          texCoord: 2,
-        },
-        count: torusSize(attrs.row, attrs.column),
-        getGenerators: () => {
-          return {
-            position: function* () {
-              yield* torusPosition(attrs.row, attrs.column, attrs.irad, attrs.orad);
-            },
-            normal: function* () {
-              yield* torusNormal(attrs.row, attrs.column);
-            },
-            texCoord: function* () {
-              while (true) {
-                yield 1;
-              }
-            },
-          };
-        },
-      },
-    },
-    aabb: torusAABB(attrs.irad, attrs.orad),
-  });
-});
+// GeometryFactory.addType('torus', {
+//   row: {
+//     converter: 'Number',
+//     defaultValue: 32,
+//   },
+//   column: {
+//     converter: 'Number',
+//     defaultValue: 32,
+//   },
+//   irad: {
+//     converter: 'Number',
+//     defaultValue: 0.5,
+//   },
+//   orad: {
+//     converter: 'Number',
+//     defaultValue: 1.0,
+//   },
+// }, (gl, attrs) => {
+//   return GeometryBuilder.build(gl, {
+//     indices: {
+//       default: {
+//         generator: function* () {
+//           yield* torusIndex(attrs.row, attrs.column);
+//         },
+//         topology: WebGLRenderingContext.TRIANGLES,
+//       },
+//       wireframe: {
+//         generator: function* () {
+//           yield* GeometryUtility.linesFromTriangles(torusIndex(attrs.row, attrs.column));
+//         },
+//         topology: WebGLRenderingContext.LINES,
+//       },
+//     },
+//     vertices: {
+//       main: {
+//         size: {
+//           position: 3,
+//           normal: 3,
+//           texCoord: 2,
+//         },
+//         count: torusSize(attrs.row, attrs.column),
+//         getGenerators: () => {
+//           return {
+//             position: function* () {
+//               yield* torusPosition(attrs.row, attrs.column, attrs.irad, attrs.orad);
+//             },
+//             normal: function* () {
+//               yield* torusNormal(attrs.row, attrs.column);
+//             },
+//             texCoord: function* () {
+//               while (true) {
+//                 yield 1;
+//               }
+//             },
+//           };
+//         },
+//       },
+//     },
+//     aabb: torusAABB(attrs.irad, attrs.orad),
+//   });
+// });
 
 gr.registerComponent('AABB', {
   attributes: {

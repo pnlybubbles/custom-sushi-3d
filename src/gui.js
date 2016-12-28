@@ -4,10 +4,10 @@ gr(() => {
   const stats = new Stats();
   stats.showPanel(0);
   document.body.appendChild(stats.dom);
-  gr('#canvas')('goml')('LoopManager').first().register((i) => {
+  gr('#canvas')('goml').first().getComponent('LoopManager').register((i) => {
     stats.begin();
   }, -100000000);
-  gr('#canvas')('goml')('LoopManager').first().register((i) => {
+  gr('#canvas')('goml').first().getComponent('LoopManager').register((i) => {
     stats.end();
   }, 100000000);
   const gui = new dat.GUI();
