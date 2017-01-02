@@ -25,10 +25,6 @@ varying vec3 vPosition;
 #endif
 
 #ifdef FS
-  vec3 phong(vec3 specularColor, float power, vec3 normal, vec3 viewDirection, vec3 lightDirection) {
-    return specularColor * pow(max(dot(lightDirection, reflect(viewDirection, normal)), 0.), power) * (power + 1.) / 6.2831;
-  }
-
   vec3 lambert(vec3 albedo, vec3 normal, vec3 lightDirection) {
     return max(dot(vNormal, -1. * lightDirection), 0.) * albedo;
   }
@@ -53,7 +49,6 @@ varying vec3 vPosition;
       albedo *= texture2D(texture, vTexCoord).rgb;
     }
     vec3 diffuseContrib = lambert(albedo, vNormal, sun);
-    vec3 specularContrib = phong(specular.rgb, power, vNormal, normalize(_cameraPosition - vPosition), sun);
-    gl_FragColor = vec4(diffuseContrib + specularContrib, 1.) + ambient;
+    gl_FragColor = vec4(diffuseContrib, 1.) + ambient;
   }
 #endif

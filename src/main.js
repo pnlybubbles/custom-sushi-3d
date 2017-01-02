@@ -250,7 +250,21 @@ gr(() => {
     _rotation.push(n.getAttribute('rotation'));
   });
   const _phi = -1/6;
-
+  const _groupRotation = $('#sushi-group').getAttribute('rotation');
+  let theta = 0;
+  const cScale = {
+    x: 0.3,
+    y: -0.5,
+    z: 0.3,
+  };
+  const alpha = {
+    from: 0.9,
+    to: 0.5,
+  }
+  const radius = {
+    from: 0.35,
+    to: 0.8,
+  }
   function setRadius(phi) {
     let r = 1 / Math.sin(phi * Math.PI);
     if (r > 1 / EPS) { r = 1 / EPS } else if (r < -1 / EPS) { r = -1 / EPS }
@@ -271,11 +285,6 @@ gr(() => {
     $('.come').setAttribute('position', _cPosition);
     $('.neta').setAttribute('position', _nPosition);
     $('.sushi').setAttribute('rotation', _rotation);
-    const cScale = {
-      x: 0.3,
-      y: -0.5,
-      z: 0.3,
-    };
     Promise.resolve().then(tw({
       from: {
         phi: _phi,
@@ -302,7 +311,6 @@ gr(() => {
     })).then(() => {
       const cPosition = $('.come').getAttribute('position');
       const nPosition = $('.neta').getAttribute('position');
-      const groupRotation = $('#sushi-group').getAttribute('rotation');
       const rotation = [];
       $('.sushi').forEach((n) => {
         rotation.push(n.getAttribute('rotation'));
@@ -311,18 +319,21 @@ gr(() => {
       let scaled = false;
       tw({
         from: {
-          radius: 0,
+          theta: 0,
         },
         to: {
-          radius: 40,
+          theta: 40,
         },
         duration: 800,
         easing: 'easeOutQuint',
         step(state) {
-          const q = Quaternion.multiply(groupRotation, Quaternion.angleAxis(state.radius * Math.PI / 180, new Vector3(0, 1, 0)));
+          const q = Quaternion.multiply(_groupRotation, Quaternion.angleAxis((theta + state.theta) * Math.PI / 180, new Vector3(0, 1, 0)));
           $('#sushi-group').setAttribute('rotation', q);
+          $('#yuka-material').setAttribute('rot', -(theta + state.theta));
         },
-      })();
+      })().then(() => {
+        theta += 40;
+      });
       tw({
         from: {
           rotation: 0,
@@ -357,6 +368,8 @@ gr(() => {
             $('.come').setAttribute('position', new Vector3(_cPosition.X, cPosition.Y + state.y - (-cScale.y), _cPosition.Z));
           }
           $('.neta').setAttribute('position', new Vector3(_nPosition.X, nPosition.Y + state.y, _nPosition.Z));
+          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * (state.y / 3));
+          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * (state.y / 3));
         },
       }), tw({
         from: {
@@ -389,6 +402,8 @@ gr(() => {
         easing: 'easeInExpo',
         step(state) {
           setRadius(state.phi);
+          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * (-state.ny / (_nPosition.Y - nPosition.Y)));
+          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * (-state.ny / (_nPosition.Y - nPosition.Y)));
           $('.come').setAttribute('position', new Vector3(cPosition.X, state.cy, cPosition.Z));
           $('.neta').setAttribute('position', new Vector3(nPosition.X, state.ny, nPosition.Z));
         },
@@ -454,7 +469,7 @@ gr(() => {
           $('.neta').setAttribute('position', new Vector3(_nPosition.X, _nPosition.Y - (_cScale.Y - state.cScaleY), _nPosition.Z));
         },
       })();
-    }).then(sleep(500)).then(() => {
+    }).then(sleep(400)).then(() => {
       move();
     }).catch((e) => {
       console.error(e);
