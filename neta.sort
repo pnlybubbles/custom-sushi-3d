@@ -35,21 +35,77 @@ varying vec3 vPosition;
     return max(dot(vNormal, -1. * lightDirection), 0.) * albedo;
   }
 
+  float drawLine(vec2 uv, vec2 offset, float width, float margin, float blur) {
+    float x = offset.x + uv.x;
+    return smoothstep(-blur, blur, abs(mod(x, width + margin) - width / 2.) - width / 2.);
+  }
+
+  mat2 rotate(float t) {
+    return mat2(cos(t), -sin(t), sin(t), cos(t));
+  }
+
   @{usedFlag:"_textureUsed"}
   uniform sampler2D texture;
   uniform bool _textureUsed;
-  @{type:"color", default:"#6E183D"}
-  uniform vec4 color;
   @{type:"color", default:"#000000"}
   uniform vec4 ambient;
-  @{type:"float", default:"10"}
+  @{default:"10"}
   uniform vec3 sun;
+  @{type:"color", default:"#f00"}
+  uniform vec4 colorTop;
+  @{type:"color", default:"#000"}
+  uniform vec4 colorLineTop;
+  @{default:"0,0"}
+  uniform vec2 offsetTop;
+  @{default:"0.05"}
+  uniform float widthTop;
+  @{default:"0.07"}
+  uniform float marginTop;
+  @{default:"45"}
+  uniform float rotationTop;
+  @{type:"color", default:"#0f0"}
+  uniform vec4 colorForward;
+  @{type:"color", default:"#000"}
+  uniform vec4 colorLineForward;
+  @{default:"0,0"}
+  uniform vec2 offsetForward;
+  @{default:"0.05"}
+  uniform float widthForward;
+  @{default:"0.07"}
+  uniform float marginForward;
+  @{default:"0"}
+  uniform float rotationForward;
+  @{type:"color", default:"#00f"}
+  uniform vec4 colorRight;
+  @{type:"color", default:"#000"}
+  uniform vec4 colorLineRight;
+  @{default:"0,0"}
+  uniform vec2 offsetRight;
+  @{default:"0.05"}
+  uniform float widthRight;
+  @{default:"0.07"}
+  uniform float marginRight;
+  @{default:"0"}
+  uniform float rotationRight;
   void main(){
-    vec3 albedo = color.rgb;
+    vec3 albedo;
+    if (all(lessThan(vTexCoord, vec2(0.5, 0.5)))) {
+      float c = drawLine(rotate(radians(rotationTop)) * vTexCoord, offsetTop, widthTop, marginTop, 0.01);
+      albedo = colorTop.rgb * c + colorLineTop.rgb * (1. - c);
+    } else {
+      if (vTexCoord.x >= 0.5) {
+        float c = drawLine(rotate(radians(rotationForward)) * vTexCoord, offsetForward, widthForward, marginForward, 0.01);
+        albedo = colorForward.rgb * c + colorLineForward.rgb * (1. - c);
+      } else {
+        float c = drawLine(rotate(radians(rotationRight)) * vTexCoord, offsetRight, widthRight, marginRight, 0.01);
+        albedo = colorRight.rgb * c + colorLineRight.rgb * (1. - c);
+      }
+    }
     if (_textureUsed) {
       albedo *= texture2D(texture, vTexCoord).rgb;
     }
     vec3 diffuseContrib = lambert(albedo, vNormal, sun);
     gl_FragColor = vec4(diffuseContrib, 1.) + ambient;
+    // gl_FragColor = vec4(albedo, 1.);
   }
 #endif

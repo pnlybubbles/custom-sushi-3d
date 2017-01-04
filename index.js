@@ -31520,13 +31520,27 @@ class DivCube {
     this.position = [];
     this.index = [];
     this.normal = [];
+    this.texCoord = [];
     this.count = 0;
     this.debug = false;
+    this.texCoordMapping = [
+      {
+        dot: Vector3.YUnit,
+        offset: [0, 0],
+      }, {
+        dot: Vector3.XUnit,
+        offset: [0.5, 0],
+      }, {
+        dot: Vector3.ZUnit.negateThis(),
+        offset: [0, 0.5],
+      },
+    ]
   }
 
   debugInit() {
     this.index_ = [];
     this.position_ = [];
+    this.texCoord_ = [];
     this.div_ = [];
   }
 
@@ -31541,6 +31555,7 @@ class DivCube {
       this.validate();
       console.log(this.index_);
       console.log(this.position_);
+      console.log(this.texCoord_);
     }
   }
 
@@ -31551,11 +31566,11 @@ class DivCube {
     const forward = Vector3.ZUnit.negateThis();
     this.offset = 0;
     this.rect(center.subtractWith(forward), up, right, forward.negateThis()); // 手前
-    this.rect(center.addWith(forward), up, right.negateThis(), forward); // 奥
+    this.rect(center.addWith(forward), up.negateThis(), right, forward); // 奥
     this.rect(center.addWith(up), forward, right, up); // 上
-    this.rect(center.addWith(right), forward, up.negateThis(), right); // 右
-    this.rect(center.subtractWith(up), forward, right.negateThis(), up.negateThis()); // 下
-    this.rect(center.subtractWith(right), forward, up, right.negateThis()); // 左
+    this.rect(center.subtractWith(up), forward.negateThis(), right, up.negateThis()); // 下
+    this.rect(center.addWith(right), up, forward, right); // 右
+    this.rect(center.subtractWith(right), up, forward.negateThis(), right.negateThis()); // 左
   }
 
   rect(center, up, right, forward) {
@@ -31568,7 +31583,12 @@ class DivCube {
         this.position = this.position.concat(Array.prototype.slice.call(p.rawElements));
         if (this.debug) { this.position_.push(Array.prototype.slice.call(p.rawElements).toString() + center.toString() + up.toString() + right.toString()); }
         this.normal = this.normal.concat(Array.prototype.slice.call(forward.rawElements));
-        // console.log(x, y, this.position.length, this.normal.length);
+        this.texCoordMapping.forEach((v) => {
+          if (v.dot.dotWith(forward) !== 0) {
+            this.texCoord = this.texCoord.concat([v.offset[0] + x * (0.5 / xdiv), v.offset[1] + 0.5 - y * (0.5 / ydiv)]);
+            if (this.debug) {this.texCoord_.push([v.offset[0] + x * (0.5 / xdiv), v.offset[1] + 0.5 - y * (0.5 / ydiv)].toString() + forward.toString())}
+          }
+        });
         if (x !== 0 && y !== 0) {
           let poly = [];
           [[-1, -1], [0, -1], [-1, 0], [0, 0], [-1, 0], [0, -1]].forEach((dxdy, i) => {
@@ -31601,6 +31621,15 @@ class DivCube {
     if (this.index.length % this.topology !== 0) {
       console.error(`index length(${this.index.length}) is not a multiple of topology(${this.topology}).`);
     }
+    if (this.texCoord.length % 2 !== 0) {
+      console.error(`texCoord length(${this.texCoord.length}) is not a multiple of 2.`);
+    }
+    if (this.position.length !== this.normal.length) {
+      console.error(`normal length is not match to position length. normal: ${this.normal.length}, position: ${this.position.length}`);
+    }
+    if (this.position.length / 3 !== this.texCoord.length / 2) {
+      console.error(`texCoord pair length is not match to position pair length. texCoord: ${this.texCoord.length / 2}, position: ${this.position.length / 3}`);
+    }
     this.index.forEach((v, idx) => {
       if (isNaN(parseInt(v)) || parseInt(v) !== v) {
         console.error(`index(${v}) is not a integer. in: index[${idx}] (${Math.ceil(idx / this.topology)})`);
@@ -31625,9 +31654,14 @@ class DivCube {
         console.warn(`normal(${v.toString()}) is not normalized(${n.magnitude}). in: normal[${idx * 3}..${idx * 3 + 3}] (${idx})`);
       }
     });
-    if (this.position.length !== this.normal.length) {
-      console.error(`normal length is not match to position length. normal: ${this.normal.length}, position: ${this.position.length}`);
-    }
+    this.texCoord.forEach((v, idx) => {
+      if (isNaN(parseFloat(v))) {
+        console.error(`texCoord(${v}) is not a number. in: texCoord[${idx}] (${Math.ceil(idx / 2)})`);
+      }
+      if (v > 1.0 || v < 0) {
+        console.warn(`texCoord(${v}) is out of unit space(0 < q < 1). in: texCoord[${idx}] (${Math.ceil(idx / 2)})`);
+      }
+    });
   }
 }
 
@@ -31683,9 +31717,7 @@ GeometryFactory.addType("div-cube", {
               yield* dc.normal;
             },
             texCoord: function* () {
-              while (true) {
-                yield 1;
-              }
+              yield* dc.texCoord;
             }
           };
         }
@@ -31748,7 +31780,7 @@ gr(() => {
   function setRadius(phi) {
     let r = 1 / Math.sin(phi * Math.PI);
     if (r > 1 / EPS) { r = 1 / EPS } else if (r < -1 / EPS) { r = -1 / EPS }
-    $('#neta-material').setAttribute('radius', r);
+    $('.neta-material').setAttribute('radius', r);
   }
 
   function setRotation(rotation, deg) {
@@ -31859,7 +31891,7 @@ gr(() => {
           phi: -1/2,
         },
         duration: 300,
-        easing: 'easeOutExpo',
+        easing: 'easeOutCubic',
         step(state) {
           setRadius(state.phi);
         },
