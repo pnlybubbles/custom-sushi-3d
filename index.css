@@ -131,6 +131,7 @@ body {
   cursor: pointer;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
+  margin-top: -1px;
 }
 #customize .slider::-webkit-slider-thumb:hover {
   background-color: #fff;
@@ -142,7 +143,7 @@ body {
 }
 #debug {
   box-sizing: border-box;
-  padding: 5px 0;
+  padding: 10px 0;
   font-size: 13px;
   color: #aaa;
   width: 80px;

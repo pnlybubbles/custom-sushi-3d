@@ -7,3 +7,4 @@ require('./src/post-effect');
 require('./src/sushi');
 require('./src/main');
 require('./src/customize');
+require('./src/load');

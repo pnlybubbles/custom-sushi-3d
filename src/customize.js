@@ -74,7 +74,7 @@ new Vue({
       this.cvs('.neta-material').setAttribute('width', val);
     },
     offset(val) {
-      this.cvs('.neta-material').setAttribute('offset', val);
+      this.cvs('.neta-material').setAttribute('offset', `${val},0`);
     },
     margin(val) {
       this.cvs('.neta-material').setAttribute('margin', val);

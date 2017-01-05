@@ -28,6 +28,8 @@ gr(() => {
     stats.end();
   }, 100000000);
   const gui = new dat.GUI();
+  const general = new General();
+  gui.add(general, 'mouse');
   const vignetting = new Vignetting();
   const f1 = gui.addFolder('Vignetting');
   f1.add(vignetting, 'pass');
@@ -55,6 +57,32 @@ gr(() => {
   f4.open();
   toggleDebug(debug);
 });
+
+class General {
+  constructor() {
+    this._mouse = false;
+  }
+
+  set mouse(v) {
+    this._mouse = v;
+    if (this._mouse) {
+      gr('#canvas')('camera').setAttribute('rotation', '0,0,0');
+      gr('#canvas')('camera').setAttribute('position', '0,0,30');
+      // console.log(gr('#canvas')('scene').single());
+      // gr('#canvas')('scene').single().addComponent('MouseCameraControl', {
+      //   center: '30',
+      // });
+    } else {
+      gr('#canvas')('camera').setAttribute('rotation', '-10,0,0');
+      gr('#canvas')('camera').setAttribute('position', '0,10,30');
+      // gr('#canvas')('scene').single().removeComponent('MouseCameraControl');
+    }
+  }
+
+  get mouse() {
+    return this._mouse;
+  }
+}
 
 class Vignetting {
   constructor() {

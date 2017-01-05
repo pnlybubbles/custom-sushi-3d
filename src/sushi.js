@@ -1,6 +1,5 @@
 const {
-  GeometryUtility,
-  GeometryBuilder,
+  Geometry,
   GeometryFactory,
 } = require('grimoirejs-fundamental').default.Geometry;
 const {Vector3, AABB} = require('grimoirejs-math').default;
@@ -62,6 +61,27 @@ class SushiGeo {
     }
   }
 
+  interleave() {
+    let vertices = [];
+    for (let i = 0; i <= this.position.length / 3; i++) {
+      vertices.push(...this.position.slice(i * 3, (i + 1) * 3).concat(this.normal.slice(i * 3, (i + 1) * 3)).concat(this.texCoord.slice(i * 2, (i + 1) * 2)));
+    }
+    return vertices;
+  }
+
+  wireframe() {
+    let indices = [];
+    const ic = new Array(3);
+    for (let i = 0; i <= this.index.length - 1; i++) {
+      ic[i % 3] = this.index[i];
+      if (i % 3 === 2) {
+        const a = ic[0], b = ic[1], c = ic[2];
+        indices.push(a, b, b, c, c, a);
+      }
+    }
+    return indices;
+  }
+
   cube() {
     const center = Vector3.Zero;
     const up = Vector3.YUnit;
@@ -83,9 +103,9 @@ class SushiGeo {
     for (let x = 0; x <= xdiv; x++) {
       for (let y = 0; y <= ydiv; y++) {
         const p = center.addWith(right.multiplyWith(2 * x / xdiv - 1).addWith(up.multiplyWith(2 * y / ydiv - 1)));
-        this.position = this.position.concat(Array.prototype.slice.call(p.rawElements));
+        this.position.push(...Array.prototype.slice.call(p.rawElements));
         if (this.debug) { this.position_.push(Array.prototype.slice.call(p.rawElements).toString() + center.toString() + up.toString() + right.toString()); }
-        this.normal = this.normal.concat(Array.prototype.slice.call(forward.rawElements));
+        this.normal.push(...Array.prototype.slice.call(forward.rawElements));
         this.texCoordMapping.forEach((v) => {
           if (v.dot.dotWith(forward) === 1) {
             let uv;
@@ -94,7 +114,7 @@ class SushiGeo {
             } else {
               uv = [v.offset[0] + x * (this.texUnit / xdiv), v.offset[1] + this.texUnit - y * (this.texUnit / ydiv)];
             }
-            this.texCoord = this.texCoord.concat(uv);
+            this.texCoord.push(...uv);
             if (this.debug) {this.texCoord_.push(uv.toString() + forward.toString())}
           }
         });
@@ -176,6 +196,23 @@ class SushiGeo {
 
 const unitBox = new AABB([new Vector3(-1, -1, -1), new Vector3(1, 1, 1)]);
 
+const primitiveLayout = {
+    POSITION: {
+        size: 3,
+        stride: 32
+    },
+    NORMAL: {
+        size: 3,
+        stride: 32,
+        offset: 12
+    },
+    TEXCOORD: {
+        size: 2,
+        stride: 32,
+        offset: 24
+    }
+};
+
 GeometryFactory.addType("sushi", {
   div: {
     converter: 'Vector3',
@@ -183,45 +220,10 @@ GeometryFactory.addType("sushi", {
   },
 }, (gl, attrs) => {
   const sg = new SushiGeo(attrs.div);
-  sg.generate(false);
-  return GeometryBuilder.build(gl, {
-    indices: {
-      default: {
-        generator: function* () {
-          yield* sg.index;
-        },
-        topology: WebGLRenderingContext.TRIANGLES
-      },
-      wireframe: {
-        generator: function* () {
-          yield* GeometryUtility.linesFromTriangles(sg.index);
-        },
-        topology: WebGLRenderingContext.LINES
-      }
-    },
-    vertices: {
-      main: {
-        size: {
-          position: 3,
-          normal: 3,
-          texCoord: 2
-        },
-        count: sg.count,
-        getGenerators: () => {
-          return {
-            position: function* () {
-              yield* sg.position;
-            },
-            normal: function* () {
-              yield* sg.normal;
-            },
-            texCoord: function* () {
-              yield* sg.texCoord;
-            }
-          };
-        }
-      }
-    },
-    aabb: unitBox
-  });
+  sg.generate();
+  const geometry = new Geometry(gl);
+  geometry.addAttributes(sg.interleave(), primitiveLayout);
+  geometry.addIndex('default', sg.index);
+  geometry.addIndex('wireframe', sg.wireframe());
+  return geometry;
 });

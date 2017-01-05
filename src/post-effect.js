@@ -1,4 +1,5 @@
 const fs = require('fs');
+const gr = require('grimoirejs').default;
 const {MaterialFactory} = require('grimoirejs-fundamental').default.Material;
 
 const fxaa = fs.readFileSync(__dirname + '/fxaa.sort').toString();

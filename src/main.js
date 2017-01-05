@@ -261,5 +261,7 @@ gr(() => {
     });
   }
 
-  setTimeout(move, 1500);
+  $('goml').on('asset-load-completed', () => {
+    setTimeout(move, 2000);
+  });
 });
