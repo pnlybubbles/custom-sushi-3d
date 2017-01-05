@@ -5,7 +5,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -74,4 +75,9 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
+# User Settings
 
+index.css
+index.css.map
+index.js
+index.js.map

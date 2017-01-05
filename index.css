@@ -1,17 +1,75 @@
-body, html{
-  height: 100%;
-  width: 100%;
+body {
   margin: 0;
+  padding: 0;
 }
-
 body {
   background-color: #eee;
 }
-
 #app {
-  height: calc(100% - 40px);
+  margin-top: 20px;
 }
-
-.form {
-  padding: 0 20px;
+#app > div {
+  margin: 0 auto;
 }
+#customize {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 100px;
+}
+#customize .section-wrap {
+  box-sizing: border-box;
+  background-color: #fff;
+  padding: 30px 50px 5px 30px;
+  box-shadow: 0 3px 40px 0 rgba(0,0,0,0.4);
+}
+#customize .section-wrap .section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 25px;
+}
+#customize .section-wrap .section-hr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+#customize .label {
+  font-size: 14px;
+  color: #888;
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+}
+#customize .picker-wrap {
+  position: relative;
+}
+#customize .picker-wrap .picker {
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+#customize .color {
+  margin-top: -5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+}
+#customize .number {
+  margin-top: -5px;
+  height: 30px;
+  width: 60px;
+  border-radius: 5px;
+  border: none;
+  box-sizing: border-box;
+  padding: 0 7px;
+  color: #444;
+  background-color: rgba(0,0,0,0.1);
+}
+#customize .slider {
+  margin-left: 10px;
+}
+/*# sourceMappingURL=index.css.map */

@@ -5,3 +5,4 @@ require('grimoirejs-fundamental/register');
 require('grimoirejs-torus');
 require('./src/gui');
 require('./src/main');
+require('./src/customize');

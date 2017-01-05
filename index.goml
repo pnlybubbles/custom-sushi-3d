@@ -5,9 +5,9 @@
   <import-material typeName="lambert" src="./index.sort"/>
   <import-material typeName="neta" src="./neta.sort"/>
   <import-material typeName="yuka" src="./yuka.sort"/>
-  <material class="neta-material" id="neta-material0" type="neta" color="#c55" sun="n(1,-1.1,-1.2)" ambient="#001" colorTop="#d22" colorLineTop="#d55"  colorForward="#d22" colorLineForward="#d55"  colorRight="#d22" colorLineRight="#d55" />
-  <material class="neta-material" id="neta-material1" type="neta" color="#c55" sun="n(1,-1.1,-1.2)" ambient="#001" colorTop="#d22" colorLineTop="#d55"  colorForward="#d22" colorLineForward="#d55"  colorRight="#d22" colorLineRight="#d55" />
-  <material class="neta-material" id="neta-material2" type="neta" color="#c55" sun="n(1,-1.1,-1.2)" ambient="#001" colorTop="#d22" colorLineTop="#d55"  colorForward="#d22" colorLineForward="#d55"  colorRight="#d22" colorLineRight="#d55" />
+  <material class="neta-material" id="neta-material0" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
+  <material class="neta-material" id="neta-material1" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
+  <material class="neta-material" id="neta-material2" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
   <material id="come-material" type="lambert" color="#fff" sun="n(1,-1.1,-1.2)" ambient="#110"/>
   <material id="yuka-material" type="yuka" radius="0.5" rot="0" />
   <renderer camera=".camera" viewport="0,0,512,512">
@@ -18,16 +18,16 @@
     <texture-buffer name="bb4"/>
     <render-scene out="bb1" depthBuffer="rb"/>
     <render-fxaa id="fxaa" source="backbuffer(bb1)" out="bb2"/>
-    <render-hud id="hud" source="backbuffer(bb2)" out="bb3" texture="sushi.png" offset="0,0.4" size="1.8" pass="true"/>
-    <render-aberration id="aberration" source="backbuffer(bb3)" out="bb4" power="2.0" coef="3.4" pass="true"/>
-    <render-vignetting id="vignetting" source="backbuffer(bb4)" out="default" spread="0.9" size="0.7"/>
+    <render-hud id="hud" source="backbuffer(bb2)" out="bb3" texture="sushi.png" offset="0,0.4" size="1.8"/>
+    <render-aberration id="aberration" source="backbuffer(bb3)" out="bb4" power="2.0" coef="3.4"/>
+    <render-vignetting id="vignetting" source="backbuffer(bb4)" out="default" spread="0.9" size="0.7" pass="true"/>
   </renderer>
   <scene>
-    <!-- <camera class="camera" near="0.01" far="100.0" position="0,10,30" rotation="-10,0,0"> -->
-    <camera class="camera" near="0.01" far="100.0" position="0,0,30" rotation="0,0,0">
-      <camera.components>
+    <camera class="camera" near="0.01" far="100.0" position="0,10,30" rotation="-10,0,0">
+    <!-- <camera class="camera" near="0.01" far="100.0" position="0,0,30" rotation="0,0,0"> -->
+<!--       <camera.components>
         <MouseCameraControl moveSpeed="1" center="30"/>
-      </camera.components>
+      </camera.components> -->
     </camera>
     <mesh geometry="quad" scale="20,20,0" rotation="-90,0,0" position="0,-1.2,0" material="#yuka-material"/>
     <object id="sushi-group">
@@ -51,9 +51,9 @@
       </object>
     </object>
     <!-- <mesh geometry="come" material="#come-material" texture="tex.jpg"/> -->
-    <!-- <mesh geometry="come" material="new(neta)" texture="tex.jpg" position="0,0,0"/> -->
-    <mesh geometry="cube" color="red" position="1,0,0" scale="2,0,0" targetBuffer="wireframe"/>
+    <!-- <mesh geometry="come" material="new(neta)" texture="tex.jpg" position="0,4,0"/> -->
+<!--     <mesh geometry="cube" color="red" position="1,0,0" scale="2,0,0" targetBuffer="wireframe"/>
     <mesh geometry="cube" color="green" position="0,1,0" scale="0,2,0" targetBuffer="wireframe"/>
-    <mesh geometry="cube" color="blue" position="0,0,1" scale="0,0,2" targetBuffer="wireframe"/>
+    <mesh geometry="cube" color="blue" position="0,0,1" scale="0,0,2" targetBuffer="wireframe"/> -->
   </scene>
 </goml>

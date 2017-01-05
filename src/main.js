@@ -46,15 +46,25 @@ class DivCube {
     this.texCoordMapping = [
       {
         dot: Vector3.YUnit,
-        offset: [0, 0],
+        offset: [0.3333, 0.3333],
+      }, {
+        dot: Vector3.YUnit.negateThis(),
+        offset: [0.3333, 0.3333],
       }, {
         dot: Vector3.XUnit,
-        offset: [0.5, 0],
+        offset: [0.6666, 0.3333],
+      }, {
+        dot: Vector3.XUnit.negateThis(),
+        offset: [0.0, 0.3333],
+      }, {
+        dot: Vector3.ZUnit,
+        offset: [0.3333, 0.6666],
       }, {
         dot: Vector3.ZUnit.negateThis(),
-        offset: [0, 0.5],
+        offset: [0.3333, 0.0],
       },
-    ]
+    ];
+    this.texUnit = 0.3333;
   }
 
   debugInit() {
@@ -88,9 +98,9 @@ class DivCube {
     this.rect(center.subtractWith(forward), up, right, forward.negateThis()); // 手前
     this.rect(center.addWith(forward), up.negateThis(), right, forward); // 奥
     this.rect(center.addWith(up), forward, right, up); // 上
-    this.rect(center.subtractWith(up), forward.negateThis(), right, up.negateThis()); // 下
-    this.rect(center.addWith(right), up, forward, right); // 右
-    this.rect(center.subtractWith(right), up, forward.negateThis(), right.negateThis()); // 左
+    this.rect(center.subtractWith(up), forward, right.negateThis(), up.negateThis()); // 下
+    this.rect(center.addWith(right), forward, up.negateThis(), right); // 右
+    this.rect(center.subtractWith(right), forward, up, right.negateThis()); // 左
   }
 
   rect(center, up, right, forward) {
@@ -104,9 +114,15 @@ class DivCube {
         if (this.debug) { this.position_.push(Array.prototype.slice.call(p.rawElements).toString() + center.toString() + up.toString() + right.toString()); }
         this.normal = this.normal.concat(Array.prototype.slice.call(forward.rawElements));
         this.texCoordMapping.forEach((v) => {
-          if (v.dot.dotWith(forward) !== 0) {
-            this.texCoord = this.texCoord.concat([v.offset[0] + x * (0.5 / xdiv), v.offset[1] + 0.5 - y * (0.5 / ydiv)]);
-            if (this.debug) {this.texCoord_.push([v.offset[0] + x * (0.5 / xdiv), v.offset[1] + 0.5 - y * (0.5 / ydiv)].toString() + forward.toString())}
+          if (v.dot.dotWith(forward) === 1) {
+            let uv;
+            if (v.dot.equalWith(Vector3.YUnit.negateThis())) {
+              uv = [v.offset[0] + this.texUnit - x * (this.texUnit / xdiv), v.offset[1] + this.texUnit - y * (this.texUnit / ydiv)];
+            } else {
+              uv = [v.offset[0] + x * (this.texUnit / xdiv), v.offset[1] + this.texUnit - y * (this.texUnit / ydiv)];
+            }
+            this.texCoord = this.texCoord.concat(uv);
+            if (this.debug) {this.texCoord_.push(uv.toString() + forward.toString())}
           }
         });
         if (x !== 0 && y !== 0) {
@@ -204,7 +220,7 @@ GeometryFactory.addType("div-cube", {
   },
 }, (gl, attrs) => {
   const dc = new DivCube(attrs.div);
-  dc.generate();
+  dc.generate(true);
   return GeometryBuilder.build(gl, {
     indices: {
       default: {
