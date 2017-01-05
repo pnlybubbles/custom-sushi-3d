@@ -1,8 +1,25 @@
 const gr = require('grimoirejs').default;
 
+function toggleDebug(t) {
+  if (t) {
+    document.querySelector('body > .dg').style.display = 'block';
+    document.querySelector('body > .st').style.display = 'block';
+  } else {
+    document.querySelector('body > .dg').style.display = 'none';
+    document.querySelector('body > .st').style.display = 'none';
+  }
+}
+
+let debug = false;
+document.querySelector('#debug').addEventListener('click', () => {
+  debug = !debug;
+  toggleDebug(debug);
+});
+
 gr(() => {
   const stats = new Stats();
   stats.showPanel(0);
+  stats.dom.setAttribute('class', 'st');
   document.body.appendChild(stats.dom);
   gr('#canvas')('goml').first().getComponent('LoopManager').register((i) => {
     stats.begin();
@@ -36,6 +53,7 @@ gr(() => {
   f4.add(hud, 'pass');
   f4.add(hud, 'size', 0, 2);
   f4.open();
+  toggleDebug(debug);
 });
 
 class Vignetting {
@@ -44,7 +62,7 @@ class Vignetting {
     this._size = 0.7;
     this._amp = 1.0;
     this._speed = 1.0;
-    this._pass = false;
+    this._pass = true;
   }
 
   set pass(v) {

@@ -14,11 +14,11 @@ const defaultColor = {
 };
 
 const defaultColorStripe = {
-  hex: "#DD2222",
+  hex: "#DD5555",
   rgba: {
     r: 221,
-    g: 34,
-    b: 34,
+    g: 85,
+    b: 85,
     a: 1
   },
   a: 1,
@@ -32,10 +32,10 @@ new Vue({
   data: {
     color: defaultColor,
     colorStripe: defaultColorStripe,
-    width: 0.05,
+    width: 0.01,
     offset: 0,
-    margin: 0.07,
-    rotation: 0,
+    margin: 0.05,
+    rotation: 20,
     activePicker: null,
   },
   created() {

@@ -5,6 +5,8 @@ body
   background-color #eee
   font-family 'Nunito', sans-serif
   font-weight 400
+  visibility hidden
+  opacity 0
 
 #app
   margin-top 20px
@@ -17,6 +19,7 @@ body
   display flex
   justify-content center
   margin-bottom 100px
+  margin-top 10px
 
   .section-wrap
     box-sizing border-box
@@ -82,3 +85,19 @@ body
     margin-top 8px
     width 100px
 
+#debug
+  box-sizing border-box
+  padding 5px 0
+  font-size 13px
+  color #aaa
+  width 80px
+  float right
+  text-align center
+  transition .3s ease-in-out
+  cursor pointer
+
+  &:hover
+    background-color rgba(0, 0, 0, 0.05)
+
+  &:active
+    opacity 0.7
