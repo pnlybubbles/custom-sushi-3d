@@ -1,29 +1,8 @@
 const Vue = require('vue');
 const {Chrome} = require('vue-color');
+const gr = require('grimoirejs').default;
 
 const defaultColor = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1,
-};
-
-const defaultColorLR = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1,
-};
-
-const defaultColorFB = {
   hex: "#DD2222",
   rgba: {
     r: 221,
@@ -45,28 +24,6 @@ const defaultColorStripe = {
   a: 1,
 };
 
-const defaultColorLRStripe = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1,
-};
-
-const defaultColorFBStripe = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1,
-};
-
 new Vue({
   el: '#customize',
   components: {
@@ -74,42 +31,56 @@ new Vue({
   },
   data: {
     color: defaultColor,
-    colorLR: defaultColorLR,
-    colorFB: defaultColorFB,
     colorStripe: defaultColorStripe,
-    colorLRStripe: defaultColorLRStripe,
-    colorFBStripe: defaultColorFBStripe,
     width: 0.05,
     offset: 0,
     margin: 0.07,
     rotation: 0,
     activePicker: null,
   },
+  created() {
+    gr(() => {
+      this.cvs = gr('#canvas');
+    });
+  },
   methods: {
     onChangeColor(val) {
       this.color = val;
     },
-    onChangeColorLR(val) {
-      this.colorLR = val;
-    },
-    onChangeColorFB(val) {
-      this.colorFB = val;
-    },
     onChangeColorStripe(val) {
       this.colorStripe = val;
     },
-    onChangeColorLRStripe(val) {
-      this.colorLRStripe = val;
-    },
-    onChangeColorFBStripe(val) {
-      this.colorFBStripe = val;
-    },
-    picker(tag) {
+    picker(tag, e) {
+      if (e && e.path.some((elm) => {
+        return Array.from(this.$el.querySelectorAll('.picker-wrap')).includes(elm);
+      })) {
+        return;
+      }
       if (this.activePicker === tag) {
         this.activePicker = null;
       } else {
         this.activePicker = tag;
       }
     }
-  }
+  },
+  watch: {
+    color(val) {
+      this.cvs('.neta-material').setAttribute('color', val.hex);
+    },
+    colorStripe(val) {
+      this.cvs('.neta-material').setAttribute('colorStripe', val.hex);
+    },
+    width(val) {
+      this.cvs('.neta-material').setAttribute('width', val);
+    },
+    offset(val) {
+      this.cvs('.neta-material').setAttribute('offset', val);
+    },
+    margin(val) {
+      this.cvs('.neta-material').setAttribute('margin', val);
+    },
+    rotation(val) {
+      this.cvs('.neta-material').setAttribute('rotation', val);
+    },
+  },
 });

@@ -4,6 +4,8 @@ body {
 }
 body {
   background-color: #eee;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
 }
 #app {
   margin-top: 20px;
@@ -23,7 +25,7 @@ body {
 #customize .section-wrap {
   box-sizing: border-box;
   background-color: #fff;
-  padding: 30px 50px 5px 30px;
+  padding: 40px 60px 15px 55px;
   box-shadow: 0 3px 40px 0 rgba(0,0,0,0.4);
 }
 #customize .section-wrap .section {
@@ -36,11 +38,23 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+#customize .section-title {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #666;
+}
+#customize .section-title:not(:first-child) {
+  margin-top: 10px;
 }
 #customize .label {
   font-size: 14px;
   color: #888;
-  width: 120px;
+  width: 60px;
   text-align: right;
   margin-right: 10px;
 }
@@ -49,27 +63,78 @@ body {
 }
 #customize .picker-wrap .picker {
   position: absolute;
-  left: 10px;
-  top: 0;
+  left: 15px;
+  top: -5px;
 }
 #customize .color {
   margin-top: -5px;
   width: 30px;
   height: 30px;
   border-radius: 5px;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+#customize .color:hover {
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.5);
+}
+#customize .color.active {
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.5);
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
 }
 #customize .number {
-  margin-top: -5px;
-  height: 30px;
-  width: 60px;
+  display: block;
+  -webkit-appearance: none;
   border-radius: 5px;
-  border: none;
+  border: 2px solid #fff;
   box-sizing: border-box;
+  height: 34px;
   padding: 0 7px;
   color: #444;
   background-color: rgba(0,0,0,0.1);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  outline: 0;
+  margin-top: -7px;
+  width: 60px;
+}
+#customize .number:hover {
+  border: 2px solid #ea3829;
+}
+#customize .number:focus {
+  border: 2px solid #ea3829;
+  background-color: #fff;
 }
 #customize .slider {
+  display: block;
+  -webkit-appearance: none;
+  background-color: rgba(0,0,0,0.1);
+  width: 300px;
+  height: 5px;
+  border-radius: 5px;
+  margin: 0 auto;
+  outline: 0;
   margin-left: 10px;
+  margin-top: 8px;
+  width: 100px;
+}
+#customize .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #ea3829;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+#customize .slider::-webkit-slider-thumb:hover {
+  background-color: #fff;
+  border: 2px solid #ea3829;
+}
+#customize .slider::-webkit-slider-thumb:active {
+  -webkit-transform: scale(1.4);
+          transform: scale(1.4);
 }
 /*# sourceMappingURL=index.css.map */

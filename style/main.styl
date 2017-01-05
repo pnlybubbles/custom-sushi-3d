@@ -1,6 +1,10 @@
+@import 'style/input'
+
 body
   // background-color #444
   background-color #eee
+  font-family 'Nunito', sans-serif
+  font-weight 400
 
 #app
   margin-top 20px
@@ -17,7 +21,7 @@ body
   .section-wrap
     box-sizing border-box
     background-color #fff
-    padding 30px 50px 5px 30px
+    padding 40px 60px 15px 55px
     box-shadow 0 3px 40px 0 rgba(0, 0, 0, 0.4)
 
     .section
@@ -26,11 +30,22 @@ body
 
     .section-hr
       display flex
+      justify-content space-around
+
+  .section-title
+    font-size 16px
+    font-weight 900
+    margin-bottom 20px
+    text-align center
+    color #666
+
+    &:not(:first-child)
+      margin-top 10px
 
   .label
     font-size 14px
     color #888
-    width 120px
+    width 60px
     text-align right
     margin-right 10px
 
@@ -39,26 +54,31 @@ body
 
     .picker
       position absolute
-      left 10px
-      top 0
+      left 15px
+      top -5px;
 
   .color
     margin-top -5px
     width 30px
     height 30px
     border-radius 5px
+    transition .3s ease-in-out
+
+    &:hover
+      box-shadow 0 1px 10px 0 rgba(0, 0, 0, 0.5)
+
+    &.active
+      box-shadow 0 1px 10px 0 rgba(0, 0, 0, 0.5)
+      transform scale(1.2);
 
   .number
-    margin-top -5px
-    height 30px
+    input-text()
+    margin-top -7px
     width 60px
-    border-radius 5px
-    border none
-    box-sizing border-box
-    padding 0 7px
-    color #444
-    background-color rgba(0, 0, 0, 0.1)
 
   .slider
+    input-range()
     margin-left 10px
+    margin-top 8px
+    width 100px
 

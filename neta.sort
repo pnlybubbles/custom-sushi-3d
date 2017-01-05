@@ -35,7 +35,7 @@ varying vec3 vPosition;
     return max(dot(vNormal, -1. * lightDirection), 0.) * albedo;
   }
 
-  float drawLine(vec2 uv, vec2 offset, float width, float margin, float blur) {
+  float drawStripe(vec2 uv, vec2 offset, float width, float margin, float blur) {
     float x = offset.x + uv.x;
     return smoothstep(-blur, blur, abs(mod(x, width + margin) - width / 2.) - width / 2.);
   }
@@ -54,7 +54,7 @@ varying vec3 vPosition;
   @{type:"color", default:"#fff"}
   uniform vec4 color;
   @{type:"color", default:"#ccc"}
-  uniform vec4 colorLine;
+  uniform vec4 colorStripe;
   @{default:"0,0"}
   uniform vec2 offset;
   @{default:"0.05"}
@@ -67,19 +67,19 @@ varying vec3 vPosition;
     float c;
     mat2 r = rotate(radians(rotation));
     if (vTexCoord.x < 0.3333) {
-      c = drawLine(r * vec2(0.3333, vTexCoord.y), offset, width, margin, 0.01);
+      c = drawStripe(r * vec2(0.3333, vTexCoord.y), offset, width, margin, 0.01);
     } else if (vTexCoord.x > 0.6666) {
-      c = drawLine(r * vec2(0.6666, vTexCoord.y), offset, width, margin, 0.01);
+      c = drawStripe(r * vec2(0.6666, vTexCoord.y), offset, width, margin, 0.01);
     } else {
       if (vTexCoord.y < 0.3333) {
-        c = drawLine(r * vec2(vTexCoord.x, 0.3333), offset, width, margin, 0.01);
+        c = drawStripe(r * vec2(vTexCoord.x, 0.3333), offset, width, margin, 0.01);
       } else if (vTexCoord.y > 0.6666) {
-        c = drawLine(r * vec2(vTexCoord.x, 0.6666), offset, width, margin, 0.01);
+        c = drawStripe(r * vec2(vTexCoord.x, 0.6666), offset, width, margin, 0.01);
       } else {
-        c = drawLine(r * vTexCoord, offset, width, margin, 0.01);
+        c = drawStripe(r * vTexCoord, offset, width, margin, 0.01);
       }
     }
-    vec3 albedo = color.rgb * c + colorLine.rgb * (1. - c);
+    vec3 albedo = color.rgb * c + colorStripe.rgb * (1. - c);
     if (_textureUsed) {
       albedo *= texture2D(texture, vTexCoord).rgb;
     }

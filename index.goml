@@ -5,9 +5,9 @@
   <import-material typeName="lambert" src="./index.sort"/>
   <import-material typeName="neta" src="./neta.sort"/>
   <import-material typeName="yuka" src="./yuka.sort"/>
-  <material class="neta-material" id="neta-material0" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
-  <material class="neta-material" id="neta-material1" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
-  <material class="neta-material" id="neta-material2" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorLine="#d55" />
+  <material class="neta-material" id="neta-material0" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorStripe="#d55" />
+  <material class="neta-material" id="neta-material1" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorStripe="#d55" />
+  <material class="neta-material" id="neta-material2" type="neta" sun="n(1,-1.1,-1.2)" ambient="#001" color="#d22" colorStripe="#d55" />
   <material id="come-material" type="lambert" color="#fff" sun="n(1,-1.1,-1.2)" ambient="#110"/>
   <material id="yuka-material" type="yuka" radius="0.5" rot="0" />
   <renderer camera=".camera" viewport="0,0,512,512">

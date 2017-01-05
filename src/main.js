@@ -32,7 +32,7 @@ const {
 } = require('grimoirejs-fundamental').default.Geometry;
 const {Vector3, Quaternion, AABB} = require('grimoirejs-math').default;
 
-class DivCube {
+class SushiGeo {
   constructor(div) {
     this.div = div;
     this.offset = 0;
@@ -201,7 +201,7 @@ class DivCube {
   }
 }
 
-// const d = new DivCube();
+// const d = new SushiGeo();
 // const dv = new Vector3(1, 2, 1);
 // d.generate(dv);
 // console.log(2 * (3 * 2 * dv.X * dv.Y) + 2 * (3 * 2 * dv.Y * dv.Z) + 2 * (3 * 2 * dv.Z * dv.X));
@@ -209,7 +209,7 @@ class DivCube {
 // console.log((dv.X + 1) * (dv.Y + 1) * 2 * 3 + (dv.Y + 1) * (dv.Z + 1) * 2 * 3 + (dv.Z + 1) * (dv.X + 1) * 2 * 3);
 // d.validate();
 
-// const divCube = new DivCube();
+// const SushiGeo = new SushiGeo();
 
 const unitBox = new AABB([new Vector3(-1, -1, -1), new Vector3(1, 1, 1)]);
 
@@ -219,19 +219,19 @@ GeometryFactory.addType("div-cube", {
     defaultValue: '2,2,2',
   },
 }, (gl, attrs) => {
-  const dc = new DivCube(attrs.div);
-  dc.generate(true);
+  const sg = new SushiGeo(attrs.div);
+  sg.generate(false);
   return GeometryBuilder.build(gl, {
     indices: {
       default: {
         generator: function* () {
-          yield* dc.index;
+          yield* sg.index;
         },
         topology: WebGLRenderingContext.TRIANGLES
       },
       wireframe: {
         generator: function* () {
-          yield* GeometryUtility.linesFromTriangles(dc.index);
+          yield* GeometryUtility.linesFromTriangles(sg.index);
         },
         topology: WebGLRenderingContext.LINES
       }
@@ -243,17 +243,17 @@ GeometryFactory.addType("div-cube", {
           normal: 3,
           texCoord: 2
         },
-        count: dc.count,
+        count: sg.count,
         getGenerators: () => {
           return {
             position: function* () {
-              yield* dc.position;
+              yield* sg.position;
             },
             normal: function* () {
-              yield* dc.normal;
+              yield* sg.normal;
             },
             texCoord: function* () {
-              yield* dc.texCoord;
+              yield* sg.texCoord;
             }
           };
         }
@@ -313,6 +313,7 @@ gr(() => {
     from: 0.35,
     to: 0.8,
   }
+
   function setRadius(phi) {
     let r = 1 / Math.sin(phi * Math.PI);
     if (r > 1 / EPS) { r = 1 / EPS } else if (r < -1 / EPS) { r = -1 / EPS }
@@ -524,5 +525,5 @@ gr(() => {
     });
   }
 
-  move();
+  setTimeout(move, 1500);
 });

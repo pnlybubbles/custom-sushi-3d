@@ -1,0 +1,46 @@
+input-range()
+  display block
+  -webkit-appearance none
+  background-color rgba(0, 0, 0, 0.1)
+  width 300px
+  height 5px
+  border-radius 5px
+  margin 0 auto
+  outline 0
+
+  &::-webkit-slider-thumb
+    -webkit-appearance none
+    background-color #EA3829
+    width 18px
+    height 18px
+    border-radius 50%
+    border 2px solid white
+    cursor pointer
+    transition .3s ease-in-out
+
+    &:hover
+      background-color #fff
+      border 2px solid #EA3829
+
+    &:active
+      transform scale(1.4)
+
+input-text()
+  display block
+  -webkit-appearance none
+  border-radius 5px
+  border 2px solid #fff
+  box-sizing border-box
+  height 34px
+  padding 0 7px
+  color #444
+  background-color rgba(0, 0, 0, 0.1)
+  transition .3s ease-in-out
+  outline 0
+
+  &:hover
+    border 2px solid #EA3829
+
+  &:focus
+    border 2px solid #EA3829
+    background-color #fff

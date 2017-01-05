@@ -39629,29 +39629,9 @@ var Vue = require('vue');
 var _require = require('vue-color'),
     Chrome = _require.Chrome;
 
+var gr = require('grimoirejs').default;
+
 var defaultColor = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1
-};
-
-var defaultColorLR = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1
-};
-
-var defaultColorFB = {
   hex: "#DD2222",
   rgba: {
     r: 221,
@@ -39673,28 +39653,6 @@ var defaultColorStripe = {
   a: 1
 };
 
-var defaultColorLRStripe = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1
-};
-
-var defaultColorFBStripe = {
-  hex: "#DD2222",
-  rgba: {
-    r: 221,
-    g: 34,
-    b: 34,
-    a: 1
-  },
-  a: 1
-};
-
 new Vue({
   el: '#customize',
   components: {
@@ -39702,47 +39660,66 @@ new Vue({
   },
   data: {
     color: defaultColor,
-    colorLR: defaultColorLR,
-    colorFB: defaultColorFB,
     colorStripe: defaultColorStripe,
-    colorLRStripe: defaultColorLRStripe,
-    colorFBStripe: defaultColorFBStripe,
     width: 0.05,
     offset: 0,
     margin: 0.07,
     rotation: 0,
     activePicker: null
   },
+  created: function created() {
+    var _this = this;
+
+    gr(function () {
+      _this.cvs = gr('#canvas');
+    });
+  },
+
   methods: {
     onChangeColor: function onChangeColor(val) {
       this.color = val;
     },
-    onChangeColorLR: function onChangeColorLR(val) {
-      this.colorLR = val;
-    },
-    onChangeColorFB: function onChangeColorFB(val) {
-      this.colorFB = val;
-    },
     onChangeColorStripe: function onChangeColorStripe(val) {
       this.colorStripe = val;
     },
-    onChangeColorLRStripe: function onChangeColorLRStripe(val) {
-      this.colorLRStripe = val;
-    },
-    onChangeColorFBStripe: function onChangeColorFBStripe(val) {
-      this.colorFBStripe = val;
-    },
-    picker: function picker(tag) {
+    picker: function picker(tag, e) {
+      var _this2 = this;
+
+      if (e && e.path.some(function (elm) {
+        return Array.from(_this2.$el.querySelectorAll('.picker-wrap')).includes(elm);
+      })) {
+        return;
+      }
       if (this.activePicker === tag) {
         this.activePicker = null;
       } else {
         this.activePicker = tag;
       }
     }
+  },
+  watch: {
+    color: function color(val) {
+      this.cvs('.neta-material').setAttribute('color', val.hex);
+    },
+    colorStripe: function colorStripe(val) {
+      this.cvs('.neta-material').setAttribute('colorStripe', val.hex);
+    },
+    width: function width(val) {
+      this.cvs('.neta-material').setAttribute('width', val);
+    },
+    offset: function offset(val) {
+      this.cvs('.neta-material').setAttribute('offset', val);
+    },
+    margin: function margin(val) {
+      this.cvs('.neta-material').setAttribute('margin', val);
+    },
+    rotation: function rotation(val) {
+      this.cvs('.neta-material').setAttribute('rotation', val);
+    }
   }
 });
 
-},{"vue":18,"vue-color":17}],20:[function(require,module,exports){
+},{"grimoirejs":10,"vue":18,"vue-color":17}],20:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -40009,9 +39986,9 @@ var _require$default = require('grimoirejs-math').default,
     Quaternion = _require$default.Quaternion,
     AABB = _require$default.AABB;
 
-var DivCube = function () {
-  function DivCube(div) {
-    _classCallCheck(this, DivCube);
+var SushiGeo = function () {
+  function SushiGeo(div) {
+    _classCallCheck(this, SushiGeo);
 
     this.div = div;
     this.offset = 0;
@@ -40044,7 +40021,7 @@ var DivCube = function () {
     this.texUnit = 0.3333;
   }
 
-  _createClass(DivCube, [{
+  _createClass(SushiGeo, [{
     key: 'debugInit',
     value: function debugInit() {
       this.index_ = [];
@@ -40206,10 +40183,10 @@ var DivCube = function () {
     }
   }]);
 
-  return DivCube;
+  return SushiGeo;
 }();
 
-// const d = new DivCube();
+// const d = new SushiGeo();
 // const dv = new Vector3(1, 2, 1);
 // d.generate(dv);
 // console.log(2 * (3 * 2 * dv.X * dv.Y) + 2 * (3 * 2 * dv.Y * dv.Z) + 2 * (3 * 2 * dv.Z * dv.X));
@@ -40217,7 +40194,7 @@ var DivCube = function () {
 // console.log((dv.X + 1) * (dv.Y + 1) * 2 * 3 + (dv.Y + 1) * (dv.Z + 1) * 2 * 3 + (dv.Z + 1) * (dv.X + 1) * 2 * 3);
 // d.validate();
 
-// const divCube = new DivCube();
+// const SushiGeo = new SushiGeo();
 
 var unitBox = new AABB([new Vector3(-1, -1, -1), new Vector3(1, 1, 1)]);
 
@@ -40227,8 +40204,8 @@ GeometryFactory.addType("div-cube", {
     defaultValue: '2,2,2'
   }
 }, function (gl, attrs) {
-  var dc = new DivCube(attrs.div);
-  dc.generate(true);
+  var sg = new SushiGeo(attrs.div);
+  sg.generate(false);
   return GeometryBuilder.build(gl, {
     indices: {
       default: {
@@ -40237,7 +40214,7 @@ GeometryFactory.addType("div-cube", {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  return _context.delegateYield(dc.index, 't0', 1);
+                  return _context.delegateYield(sg.index, 't0', 1);
 
                 case 1:
                 case 'end':
@@ -40254,7 +40231,7 @@ GeometryFactory.addType("div-cube", {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  return _context2.delegateYield(GeometryUtility.linesFromTriangles(dc.index), 't0', 1);
+                  return _context2.delegateYield(GeometryUtility.linesFromTriangles(sg.index), 't0', 1);
 
                 case 1:
                 case 'end':
@@ -40273,7 +40250,7 @@ GeometryFactory.addType("div-cube", {
           normal: 3,
           texCoord: 2
         },
-        count: dc.count,
+        count: sg.count,
         getGenerators: function getGenerators() {
           return {
             position: regeneratorRuntime.mark(function position() {
@@ -40281,7 +40258,7 @@ GeometryFactory.addType("div-cube", {
                 while (1) {
                   switch (_context3.prev = _context3.next) {
                     case 0:
-                      return _context3.delegateYield(dc.position, 't0', 1);
+                      return _context3.delegateYield(sg.position, 't0', 1);
 
                     case 1:
                     case 'end':
@@ -40295,7 +40272,7 @@ GeometryFactory.addType("div-cube", {
                 while (1) {
                   switch (_context4.prev = _context4.next) {
                     case 0:
-                      return _context4.delegateYield(dc.normal, 't0', 1);
+                      return _context4.delegateYield(sg.normal, 't0', 1);
 
                     case 1:
                     case 'end':
@@ -40309,7 +40286,7 @@ GeometryFactory.addType("div-cube", {
                 while (1) {
                   switch (_context5.prev = _context5.next) {
                     case 0:
-                      return _context5.delegateYield(dc.texCoord, 't0', 1);
+                      return _context5.delegateYield(sg.texCoord, 't0', 1);
 
                     case 1:
                     case 'end':
@@ -40376,6 +40353,7 @@ gr(function () {
     from: 0.35,
     to: 0.8
   };
+
   function setRadius(phi) {
     var r = 1 / Math.sin(phi * Math.PI);
     if (r > 1 / EPS) {
@@ -40593,7 +40571,7 @@ gr(function () {
     });
   }
 
-  move();
+  setTimeout(move, 1500);
 });
 
 }).call(this,require("buffer").Buffer)
