@@ -16,15 +16,18 @@ document.querySelector('#debug').addEventListener('click', () => {
   toggleDebug(debug);
 });
 
+let $ = null;
+
 gr(() => {
+  $ = gr('#canvas');
   const stats = new Stats();
   stats.showPanel(0);
   stats.dom.setAttribute('class', 'st');
   document.body.appendChild(stats.dom);
-  gr('#canvas')('goml').first().getComponent('LoopManager').register((i) => {
+  $('goml').first().getComponent('LoopManager').register((i) => {
     stats.begin();
   }, -100000000);
-  gr('#canvas')('goml').first().getComponent('LoopManager').register((i) => {
+  $('goml').first().getComponent('LoopManager').register((i) => {
     stats.end();
   }, 100000000);
   const gui = new dat.GUI();
@@ -66,16 +69,15 @@ class General {
   set mouse(v) {
     this._mouse = v;
     if (this._mouse) {
-      gr('#canvas')('camera').setAttribute('rotation', '0,0,0');
-      gr('#canvas')('camera').setAttribute('position', '0,0,30');
-      // console.log(gr('#canvas')('scene').single());
-      // gr('#canvas')('scene').single().addComponent('MouseCameraControl', {
-      //   center: '30',
-      // });
+      $('camera').setAttribute('rotation', '0,0,0');
+      $('camera').setAttribute('position', '0,0,30');
+      $('camera').single().addComponent('MouseCameraControl', {
+        distance: '30',
+      });
     } else {
-      gr('#canvas')('camera').setAttribute('rotation', '-10,0,0');
-      gr('#canvas')('camera').setAttribute('position', '0,10,30');
-      // gr('#canvas')('scene').single().removeComponent('MouseCameraControl');
+      $('camera').setAttribute('rotation', '-10,0,0');
+      $('camera').setAttribute('position', '0,10,30');
+      $('camera').single().removeComponent($('camera').single().getComponent("MouseCameraControl"));
     }
   }
 
@@ -94,7 +96,7 @@ class Vignetting {
   }
 
   set pass(v) {
-    gr('#canvas')('#vignetting').setAttribute('pass', v);
+    $('#vignetting').setAttribute('pass', v);
     this._pass = v;
   }
 
@@ -103,7 +105,7 @@ class Vignetting {
   }
 
   set spread(v) {
-    gr('#canvas')('#vignetting').setAttribute('spread', v);
+    $('#vignetting').setAttribute('spread', v);
     this._spread = v;
   }
 
@@ -112,7 +114,7 @@ class Vignetting {
   }
 
   set size(v) {
-    gr('#canvas')('#vignetting').setAttribute('size', v);
+    $('#vignetting').setAttribute('size', v);
     this._size = v;
   }
 
@@ -121,7 +123,7 @@ class Vignetting {
   }
 
   set amp(v) {
-    gr('#canvas')('#vignetting').setAttribute('amp', v);
+    $('#vignetting').setAttribute('amp', v);
     this._amp = v;
   }
 
@@ -130,7 +132,7 @@ class Vignetting {
   }
 
   set speed(v) {
-    gr('#canvas')('#vignetting').setAttribute('speed', v);
+    $('#vignetting').setAttribute('speed', v);
     this._speed = v;
   }
 
@@ -149,7 +151,7 @@ class Aberration {
   }
 
   set pass(v) {
-    gr('#canvas')('#aberration').setAttribute('pass', v);
+    $('#aberration').setAttribute('pass', v);
     this._pass = v;
   }
 
@@ -158,7 +160,7 @@ class Aberration {
   }
 
   set power(v) {
-    gr('#canvas')('#aberration').setAttribute('power', v);
+    $('#aberration').setAttribute('power', v);
     this._power = v;
   }
 
@@ -167,7 +169,7 @@ class Aberration {
   }
 
   set coef(v) {
-    gr('#canvas')('#aberration').setAttribute('coef', v);
+    $('#aberration').setAttribute('coef', v);
     this._coef = v;
   }
 
@@ -176,7 +178,7 @@ class Aberration {
   }
 
   set amp(v) {
-    gr('#canvas')('#aberration').setAttribute('amp', v);
+    $('#aberration').setAttribute('amp', v);
     this._amp = v;
   }
 
@@ -185,7 +187,7 @@ class Aberration {
   }
 
   set speed(v) {
-    gr('#canvas')('#aberration').setAttribute('speed', v);
+    $('#aberration').setAttribute('speed', v);
     this._speed = v;
   }
 
@@ -201,7 +203,7 @@ class Hud {
   }
 
   set pass(v) {
-    gr('#canvas')('#hud').setAttribute('pass', v);
+    $('#hud').setAttribute('pass', v);
     this._pass = v;
   }
 
@@ -210,7 +212,7 @@ class Hud {
   }
 
   set size(v) {
-    gr('#canvas')('#hud').setAttribute('size', v);
+    $('#hud').setAttribute('size', v);
     this._size = v;
   }
 
@@ -225,7 +227,7 @@ class Fxaa {
   }
 
   set pass(v) {
-    gr('#canvas')('#fxaa').setAttribute('pass', v);
+    $('#fxaa').setAttribute('pass', v);
     this._pass = v;
   }
 

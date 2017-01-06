@@ -37,10 +37,12 @@ new Vue({
     margin: 0.05,
     rotation: 20,
     activePicker: null,
+    attrs: {},
   },
   created() {
     gr(() => {
       this.cvs = gr('#canvas');
+      this.cvs('goml').on('asset-load-completed', this.applyHash.bind(this));
     });
   },
   methods: {
@@ -61,26 +63,71 @@ new Vue({
       } else {
         this.activePicker = tag;
       }
+    },
+    change(k, v) {
+      if (['width', 'offset', 'margin', 'rotation'].includes(k)) {
+        v = parseFloat(v);
+      }
+      this.cvs('.neta-material').setAttribute(k, v);
+      this.attrs[k] = v;
+    },
+    setHash() {
+      document.location.hash = encodeURIComponent(Object.keys(this.attrs).map((k) => {
+        return `${k}~${this.attrs[k].toString().replace(/\~/g, '')}`;
+      }).join('~'));
+    },
+    applyHash() {
+      let obj = {};
+      try {
+        if (location.hash) {
+          let k = null;
+          const arr = decodeURIComponent(document.location.hash.substr(1)).split('~');
+          for (let i = 0; i <= arr.length / 2 - 1; i++) {
+            obj[arr[i * 2]] = arr[i * 2 + 1];
+          }
+        }
+      } catch(e) {
+        console.error(e);
+      }
+      console.log(obj);
+      Object.keys(obj).forEach((k) => {
+        if (['color', 'colorStripe'].includes(k)) {
+          this[k] = {
+            hex: obj[k],
+            rgba: {
+              r: parseInt(obj[k].slice(3, 5), 16),
+              g: parseInt(obj[k].slice(5, 7), 16),
+              b: parseInt(obj[k].slice(1, 3), 16),
+              a: 1,
+            },
+            a: 1,
+          };
+        } else if (['width', 'offset', 'margin', 'rotation'].includes(k)) {
+          this[k] = obj[k];
+        } else {
+          this.cvs('.neta-material').setAttribute(k, obj[k]); // nyan
+        }
+      });
     }
   },
   watch: {
     color(val) {
-      this.cvs('.neta-material').setAttribute('color', val.hex);
+      this.change('color', val.hex);
     },
     colorStripe(val) {
-      this.cvs('.neta-material').setAttribute('colorStripe', val.hex);
+      this.change('colorStripe', val.hex);
     },
     width(val) {
-      this.cvs('.neta-material').setAttribute('width', val);
+      this.change('width', val);
     },
     offset(val) {
-      this.cvs('.neta-material').setAttribute('offset', `${val},0`);
+      this.change('offset', val);
     },
     margin(val) {
-      this.cvs('.neta-material').setAttribute('margin', val);
+      this.change('margin', val);
     },
     rotation(val) {
-      this.cvs('.neta-material').setAttribute('rotation', val);
+      this.change('rotation', val);
     },
   },
 });

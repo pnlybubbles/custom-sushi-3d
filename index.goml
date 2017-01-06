@@ -1,12 +1,12 @@
 <goml width="512" height="512">
   <geometry type="sushi" name="neta" div="10,1,1"/>
   <geometry type="sushi" name="come" div="1,1,1"/>
-  <import-material typeName="lambert" src="./index.sort"/>
+  <import-material typeName="come" src="./come.sort"/>
   <import-material typeName="neta" src="./neta.sort"/>
   <import-material typeName="yuka" src="./yuka.sort"/>
-  <material class="neta-material" id="neta-material" type="neta" sun="n(1,-1.1,-1.2)" ambient="#110" color="#d22" colorStripe="#d55" width="0.01" margin="0.05" offset="0,0" rotation="10" />
-  <material id="come-material" type="lambert" color="#fff" sun="n(1,-1.1,-1.2)" ambient="#110"/>
-  <material id="yuka-material" type="yuka" radius="0.5" rot="0" />
+  <material class="neta-material" id="neta-material" type="neta" sun="n(1,-1.1,-1.2)" ambient="#332" color="#d22" colorStripe="#d55" width="0.01" margin="0.05" offset="0,0" rotation="10" />
+  <material id="come-material" type="come" color="#fff" sun="n(1,-1.1,-1.2)" ambient="#332" shade="0.3" blur="0.5"/>
+  <material id="yuka-material" type="yuka" radius="0.25" rot="0" alpha="0.6" />
   <renderer camera=".camera" viewport="0,0,512,512">
     <render-buffer name="rb"/>
     <texture-buffer name="bb1"/>
@@ -21,9 +21,8 @@
   </renderer>
   <scene>
     <camera class="camera" near="0.01" far="100.0" position="0,10,30" rotation="-10,0,0">
-    <!-- <camera class="camera" near="0.01" far="100.0" position="0,0,30" rotation="0,0,0"> -->
-<!--       <camera.components>
-        <MouseCameraControl moveSpeed="1" center="30"/>
+     <!--  <camera.components>
+        <MouseCameraControl moveSpeed="1" origin="0,0,0"/>
       </camera.components> -->
     </camera>
     <mesh geometry="quad" scale="20,20,0" rotation="-90,0,0" position="0,-1.2,0" material="#yuka-material"/>
@@ -47,10 +46,11 @@
         </object>
       </object>
     </object>
+    <!-- <mesh geometry="quad" texture="tex.jpg" targetBuffer="default" /> -->
     <!-- <mesh geometry="come" material="#come-material" texture="tex.jpg"/> -->
     <!-- <mesh geometry="come" material="new(neta)" texture="tex.jpg" position="0,4,0"/> -->
-<!--     <mesh geometry="cube" color="red" position="1,0,0" scale="2,0,0" targetBuffer="wireframe"/>
-    <mesh geometry="cube" color="green" position="0,1,0" scale="0,2,0" targetBuffer="wireframe"/>
-    <mesh geometry="cube" color="blue" position="0,0,1" scale="0,0,2" targetBuffer="wireframe"/> -->
+    <!-- <mesh geometry="cube" color="red" position="1,0,0" scale="2,0.01,0.01" targetBuffer="wireframe"/>
+    <mesh geometry="cube" color="green" position="0,1,0" scale="0.01,2,0.01" targetBuffer="wireframe"/>
+    <mesh geometry="cube" color="blue" position="0,0,1" scale="0.01,0.01,2" targetBuffer="wireframe"/> -->
   </scene>
 </goml>

@@ -42,13 +42,17 @@ gr(() => {
     z: 0.3,
   };
   const alpha = {
-    from: 0.9,
-    to: 0.5,
-  }
+    from: 0.6,
+    to: 0.15,
+  };
   const radius = {
-    from: 0.35,
-    to: 0.8,
-  }
+    from: 0.3,
+    to: 0.6,
+  };
+  const shade = {
+    from: 0.3,
+    to: 0,
+  };
 
   function setRadius(phi) {
     let r = 1 / Math.sin(phi * Math.PI);
@@ -153,8 +157,10 @@ gr(() => {
             $('.come').setAttribute('position', new Vector3(_cPosition.X, cPosition.Y + state.y - (-cScale.y), _cPosition.Z));
           }
           $('.neta').setAttribute('position', new Vector3(_nPosition.X, nPosition.Y + state.y, _nPosition.Z));
-          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * (state.y / 3));
-          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * (state.y / 3));
+          const n = state.y / 3;
+          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * n);
+          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * n);
+          $('#come-material').setAttribute('shade', shade.from + (shade.to - shade.from) * n);
         },
       }), tw({
         from: {
@@ -187,8 +193,10 @@ gr(() => {
         easing: 'easeInExpo',
         step(state) {
           setRadius(state.phi);
-          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * (-state.ny / (_nPosition.Y - nPosition.Y)));
-          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * (-state.ny / (_nPosition.Y - nPosition.Y)));
+          const n = -state.ny / (_nPosition.Y - nPosition.Y);
+          $('#yuka-material').setAttribute('radius', radius.from + (radius.to - radius.from) * n);
+          $('#yuka-material').setAttribute('alpha', alpha.from + (alpha.to - alpha.from) * n);
+          $('#come-material').setAttribute('shade', shade.from + (shade.to - shade.from) * n);
           $('.come').setAttribute('position', new Vector3(cPosition.X, state.cy, cPosition.Z));
           $('.neta').setAttribute('position', new Vector3(nPosition.X, state.ny, nPosition.Z));
         },

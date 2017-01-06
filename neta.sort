@@ -65,7 +65,7 @@
     uniform float rotation;
     void main(){
       float c;
-      vec2 o = vec2(0.3333, 0.) + offset;
+      vec2 o = vec2(0.3333, 0.3333) + offset;
       mat2 r = rotate(radians(rotation));
       if (vTexCoord.x < 0.3333) {
         c = drawStripe(r * vec2(0.3333, vTexCoord.y), o, width, margin, 0.01);
@@ -85,7 +85,7 @@
         albedo *= texture2D(texture, vTexCoord).rgb;
       }
       vec3 diffuseContrib = lambert(albedo, vNormal, sun);
-      gl_FragColor = vec4(diffuseContrib, 1.) + ambient;
+      gl_FragColor = vec4(diffuseContrib, 1.) + ambient * vec4(albedo, color.a);
       // gl_FragColor = vec4(albedo, 1.);
     }
   #endif

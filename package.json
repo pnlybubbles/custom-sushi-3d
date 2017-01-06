@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "grimoirejs": "^0.13.0",
-    "grimoirejs-fundamental": "^0.10.10",
+    "grimoirejs": "beta",
+    "grimoirejs-fundamental": "beta",
     "grimoirejs-math": "^1.8.0",
     "regenerator-runtime": "^0.10.0",
     "shifty": "^1.5.4",
