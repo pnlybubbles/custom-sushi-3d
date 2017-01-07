@@ -36466,14 +36466,14 @@ new Vue({
       _this.cvs('goml').on('asset-load-completed', _this.applyHash.bind(_this));
     });
     window.addEventListener('hashchange', function () {
-      _this.location = document.location.href;
+      _this.href = document.location.href;
     });
   },
 
   computed: {
     shareUrl: function shareUrl() {
       var comp = {
-        url: document.location.href,
+        url: this.href,
         text: 'Sushi Pyon'
       };
       return 'https://twitter.com/share?' + Object.keys(comp).map(function (k) {
@@ -36623,6 +36623,8 @@ gr(function () {
   var gui = new dat.GUI();
   var general = new General();
   gui.add(general, 'mouse');
+  gui.add(general, 'axis');
+  gui.add(general, 'wireframe');
   gui.add(general, 'download');
   var vignetting = new Vignetting();
   var f1 = gui.addFolder('Vignetting');
@@ -36657,6 +36659,8 @@ var General = function () {
     _classCallCheck(this, General);
 
     this._mouse = false;
+    this._axis = false;
+    this._wireframe = false;
   }
 
   _createClass(General, [{
@@ -36689,6 +36693,25 @@ var General = function () {
     },
     get: function get() {
       return this._mouse;
+    }
+  }, {
+    key: 'axis',
+    set: function set(v) {
+      this._axis = v;
+      $('#axis').setAttribute('scale', this._axis ? 1 : 0);
+    },
+    get: function get() {
+      return this._axis;
+    }
+  }, {
+    key: 'wireframe',
+    set: function set(v) {
+      this._wireframe = v;
+      $('.neta').setAttribute('targetBuffer', this._wireframe ? 'wireframe' : 'default');
+      $('.come > mesh').setAttribute('targetBuffer', this._wireframe ? 'wireframe' : 'default');
+    },
+    get: function get() {
+      return this._wireframe;
     }
   }]);
 
@@ -36760,8 +36783,8 @@ var Aberration = function () {
   function Aberration() {
     _classCallCheck(this, Aberration);
 
-    this._power = 2.0;
-    this._coef = 3.4;
+    this._power = 2.4;
+    this._coef = 2.7;
     this._amp = 1.0;
     this._speed = 1.0;
     this._pass = false;

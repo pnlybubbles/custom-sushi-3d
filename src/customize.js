@@ -47,13 +47,13 @@ new Vue({
       this.cvs('goml').on('asset-load-completed', this.applyHash.bind(this));
     });
     window.addEventListener('hashchange', () => {
-      this.location = document.location.href;
+      this.href = document.location.href;
     });
   },
   computed: {
     shareUrl() {
       const comp = {
-        url: document.location.href,
+        url: this.href,
         text: 'Sushi Pyon',
       };
       return `https://twitter.com/share?${Object.keys(comp).map((k) => `${k}=${encodeURIComponent(comp[k])}`).join('&')}`;

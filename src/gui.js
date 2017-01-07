@@ -33,6 +33,8 @@ gr(() => {
   const gui = new dat.GUI();
   const general = new General();
   gui.add(general, 'mouse');
+  gui.add(general, 'axis');
+  gui.add(general, 'wireframe');
   gui.add(general, 'download');
   const vignetting = new Vignetting();
   const f1 = gui.addFolder('Vignetting');
@@ -65,6 +67,8 @@ gr(() => {
 class General {
   constructor() {
     this._mouse = false;
+    this._axis = false;
+    this._wireframe = false;
   }
 
   set mouse(v) {
@@ -84,6 +88,25 @@ class General {
 
   get mouse() {
     return this._mouse;
+  }
+
+  set axis(v) {
+    this._axis = v;
+    $('#axis').setAttribute('scale', this._axis ? 1 : 0);
+  }
+
+  get axis() {
+    return this._axis;
+  }
+
+  set wireframe(v) {
+    this._wireframe = v;
+    $('.neta').setAttribute('targetBuffer', this._wireframe ? 'wireframe' : 'default');
+    $('.come > mesh').setAttribute('targetBuffer', this._wireframe ? 'wireframe' : 'default');
+  }
+
+  get wireframe() {
+    return this._wireframe;
   }
 
   download() {
@@ -155,8 +178,8 @@ class Vignetting {
 
 class Aberration {
   constructor() {
-    this._power = 2.0;
-    this._coef = 3.4;
+    this._power = 2.4;
+    this._coef = 2.7;
     this._amp = 1.0;
     this._speed = 1.0;
     this._pass = false;
