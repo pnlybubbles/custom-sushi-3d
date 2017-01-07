@@ -1,7 +1,7 @@
 @Pass {
   @Disable(BLEND)
   @Disable(DEPTH_TEST)
-  FS_PREC(mediump,float)
+  FS_PREC(highp,float)
 
   varying vec2 vTexCoord;
 

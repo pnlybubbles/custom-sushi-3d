@@ -33,6 +33,7 @@ gr(() => {
   const gui = new dat.GUI();
   const general = new General();
   gui.add(general, 'mouse');
+  gui.add(general, 'download');
   const vignetting = new Vignetting();
   const f1 = gui.addFolder('Vignetting');
   f1.add(vignetting, 'pass');
@@ -83,6 +84,17 @@ class General {
 
   get mouse() {
     return this._mouse;
+  }
+
+  download() {
+    const dataUrl = document.querySelector('#app canvas').toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.style.display = 'none';
+    a.setAttribute('download', `sushi_${+new Date()}.png`)
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 }
 
