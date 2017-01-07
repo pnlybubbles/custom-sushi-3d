@@ -183,6 +183,11 @@ class Aberration {
     this._amp = 1.0;
     this._speed = 1.0;
     this._pass = false;
+    // disable aberration shader expect for Macintosh.
+    // abberation shader is not working under: iphone, windows
+    if (!window.navigator.userAgent.match(/macintosh/i)) {
+      this.pass = true;
+    }
   }
 
   set pass(v) {
