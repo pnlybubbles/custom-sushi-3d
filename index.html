@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sushi Pyon</title>
-  <meta property="og:title" content="Sushi Pyon" />
+  <title>🍣 WebGL Sushi 🍣</title>
+  <meta property="og:title" content="🍣 WebGL Sushi 🍣" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pnlybubbles.github.io/sushi-pyon/" />
   <meta property="og:image" content="https://pnlybubbles.github.io/sushi-pyon/assets/ogp.png" />
-  <meta property="og:site_name" content="Sushi Pyon" />
-  <meta property="og:description" content='And God said, "Let there be sushi," and there was sushi.' />
+  <meta property="og:site_name" content="🍣 WebGL Sushi 🍣" />
+  <meta property="og:description" content='And God said, "Let there be 🍣," and there was 🍣.' />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@grimoire_js" />
-  <meta name="twitter:title" content="Sushi Pyon" />
-  <meta name="twitter:description" content='And God said, "Let there be sushi," and there was sushi.' />
+  <meta name="twitter:title" content="🍣 WebGL Sushi 🍣" />
+  <meta name="twitter:description" content='And God said, "Let there be 🍣," and there was 🍣.' />
   <meta name="twitter:image" content="https://pnlybubbles.github.io/sushi-pyon/assets/ogp.png" />
   <meta name="twitter:image:alt" content="Sushi" />
   <script type="text/javascript" src="stat.min.js"></script>
@@ -23,52 +23,57 @@
   <div id="app">
     <script type="text/goml" src="index.goml" id="canvas"></script>
   </div>
-  <div id="twitter">
-    <a class="button" :href="shareUrl" target="_blank"></a>
-    <div class="label">Share your sushi!</div>
-  </div>
   <div id="customize" @click="picker(null, $event)">
-    <div class="section-wrap">
-      <div class="section-title">Colors</div>
-      <div class="section-hr">
-        <div class="section">
-          <div class="label">Surface</div>
-          <div class="edit color" :class="{ active: activePicker === 'default' }" :style="{ backgroundColor: color.hex }" @click.stop="picker('default')"></div>
-          <div class="picker-wrap" @mouseup="setHash">
-            <chrome-picker class="picker" v-show="activePicker === 'default'" v-model="color" @change-color="onChangeColor"></chrome-picker>
+    <div id="twitter">
+      <a class="button" :href="shareUrl" target="_blank"></a>
+      <transition name="fade">
+        <div class="tips" v-show="tipsVisibility">Share your SUSHI !</div>
+      </transition>
+    </div>
+    <div id="customize-card">
+      <div class="section-wrap">
+        <div class="section-title">Colors</div>
+        <div class="section-hr">
+          <div class="section">
+            <div class="label">Surface</div>
+            <div class="edit color" :class="{ active: activePicker === 'default' }" :style="{ backgroundColor: color.hex }" @click.stop="picker('default')"></div>
+            <div class="picker-wrap" @mouseup="setHash">
+              <chrome-picker class="picker" v-show="activePicker === 'default'" v-model="color" @change-color="onChangeColor"></chrome-picker>
+            </div>
+          </div>
+          <div class="section">
+            <div class="label">Stripe</div>
+            <div class="edit color" :class="{ active: activePicker === 'stripe' }" :style="{ backgroundColor: colorStripe.hex }" @click.stop="picker('stripe')"></div>
+            <div class="picker-wrap" @mouseup="setHash">
+              <chrome-picker class="picker" v-show="activePicker === 'stripe'" v-model="colorStripe" @change-color="onChangeColorStripe"></chrome-picker>
+            </div>
           </div>
         </div>
+        <div class="section-title">Stripe</div>
         <div class="section">
-          <div class="label">Stripe</div>
-          <div class="edit color" :class="{ active: activePicker === 'stripe' }" :style="{ backgroundColor: colorStripe.hex }" @click.stop="picker('stripe')"></div>
-          <div class="picker-wrap" @mouseup="setHash">
-            <chrome-picker class="picker" v-show="activePicker === 'stripe'" v-model="colorStripe" @change-color="onChangeColorStripe"></chrome-picker>
-          </div>
+          <div class="label">Width</div>
+          <input type="text" class="edit number" v-model="width" @change="setHash"></input>
+          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="width" @mouseup="setHash"></input>
         </div>
-      </div>
-      <div class="section-title">Stripe</div>
-      <div class="section">
-        <div class="label">Width</div>
-        <input type="text" class="edit number" v-model="width" @change="setHash"></input>
-        <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="width" @mouseup="setHash"></input>
-      </div>
-      <div class="section">
-        <div class="label">Margin</div>
-        <input type="text" class="edit number" v-model="margin" @change="setHash"></input>
-        <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="margin" @mouseup="setHash"></input>
-      </div>
-      <div class="section">
-        <div class="label">Offset</div>
-        <input type="text" class="edit number" v-model="offset" @change="setHash"></input>
-        <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="offset" @mouseup="setHash"></input>
-      </div>
-      <div class="section">
-        <div class="label">Rotation</div>
-        <input type="text" class="edit number" v-model="rotation" @change="setHash"></input>
-        <input type="range" min="0" max="180" step="1" class="edit slider" v-model="rotation" @mouseup="setHash"></input>
+        <div class="section">
+          <div class="label">Margin</div>
+          <input type="text" class="edit number" v-model="margin" @change="setHash"></input>
+          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="margin" @mouseup="setHash"></input>
+        </div>
+        <div class="section">
+          <div class="label">Offset</div>
+          <input type="text" class="edit number" v-model="offset" @change="setHash"></input>
+          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="offset" @mouseup="setHash"></input>
+        </div>
+        <div class="section">
+          <div class="label">Rotation</div>
+          <input type="text" class="edit number" v-model="rotation" @change="setHash"></input>
+          <input type="range" min="0" max="180" step="1" class="edit slider" v-model="rotation" @mouseup="setHash"></input>
+        </div>
       </div>
     </div>
   </div>
+  <div id="footer">Powered by <a href="https://grimoire.gl" target="_blank">Grimoire.js</a></div>
   <div id="debug">Debug</div>
   <script type="text/javascript" src="index.js"></script>
 </body>

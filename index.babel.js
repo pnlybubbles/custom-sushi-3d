@@ -8,4 +8,3 @@ require('./src/sushi');
 require('./src/main');
 require('./src/customize');
 require('./src/load');
-require('./src/twitter');

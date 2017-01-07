@@ -16,10 +16,12 @@ body
     margin 0 auto
 
 #customize
+  margin-bottom 80px
+  margin-top 10px
+
+#customize-card
   display flex
   justify-content center
-  margin-bottom 100px
-  margin-top 10px
 
   .section-wrap
     box-sizing border-box
@@ -68,10 +70,10 @@ body
     transition .3s ease-in-out
 
     &:hover
-      box-shadow 0 1px 10px 0 rgba(0, 0, 0, 0.5)
+      box-shadow 0 2px 10px 0 rgba(0, 0, 0, 0.5)
 
     &.active
-      box-shadow 0 1px 10px 0 rgba(0, 0, 0, 0.5)
+      box-shadow 0 2px 10px 0 rgba(0, 0, 0, 0.5)
       transform scale(1.2);
 
   .number
@@ -88,8 +90,8 @@ body
 #debug
   box-sizing border-box
   padding 10px 0
-  font-size 13px
-  color #aaa
+  font-size 12px
+  color #ccc
   width 80px
   float right
   text-align center
@@ -97,7 +99,7 @@ body
   cursor pointer
 
   &:hover
-    background-color rgba(0, 0, 0, 0.05)
+    background-color rgba(0, 0, 0, 0.03)
 
   &:active
     opacity 0.7
@@ -105,7 +107,7 @@ body
 label-pop-delta = 10px
 
 #twitter
-  margin 10px 0 30px
+  margin 10px 0 40px
   display flex
   justify-content center
   position relative
@@ -130,9 +132,9 @@ label-pop-delta = 10px
       opacity 0.6
       transform scale(1.1)
 
-  .label
+  .tips
     background-color #555
-    box-shadow 0 1px 4px 0 rgba(0, 0, 0, 0.5)
+    box-shadow 0 2px 10px 0 rgba(0, 0, 0, 0.5)
     position absolute
     left calc(50% + 25px)
     top -5px
@@ -148,6 +150,7 @@ label-pop-delta = 10px
     &::before
       content ''
       position absolute
+      z-index 2
       left -3px
       top 11px
       display block
@@ -155,7 +158,16 @@ label-pop-delta = 10px
       height 7px
       width 7px
       background-color #555
-      box-shadow 0 1px 4px 0 rgba(0, 0, 0, 0.5)
+
+.fade-enter-active
+.fade-leave
+  opacity 1
+  transition 1s opacity ease-in-out
+
+.fade-leave-active
+.fade-enter
+  opacity 0
+  transition 1s opacity ease-in-out
 
 @keyframes pop
   0%
@@ -167,3 +179,15 @@ label-pop-delta = 10px
   to
     left calc(50% + 25px)
 
+#footer
+  text-align center
+  font-size 14px
+  color #999
+  font-weight 900
+
+  a
+    color #777
+    text-decoration none
+
+    &:hover
+      text-decoration underline

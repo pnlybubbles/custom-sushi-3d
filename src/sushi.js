@@ -224,6 +224,6 @@ GeometryFactory.addType("sushi", {
   const geometry = new Geometry(gl);
   geometry.addAttributes(sg.interleave(), primitiveLayout);
   geometry.addIndex('default', sg.index);
-  geometry.addIndex('wireframe', sg.wireframe());
+  geometry.addIndex('wireframe', sg.wireframe(), WebGLRenderingContext.LINES);
   return geometry;
 });

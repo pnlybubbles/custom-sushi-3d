@@ -11,9 +11,8 @@ require('./src/sushi');
 require('./src/main');
 require('./src/customize');
 require('./src/load');
-require('./src/twitter');
 
-},{"./src/customize":17,"./src/gui":18,"./src/load":19,"./src/main":20,"./src/post-effect":21,"./src/sushi":22,"./src/twitter":23,"grimoirejs-fundamental/register":5,"grimoirejs-math/register":7,"grimoirejs/register":9,"regenerator-runtime/runtime":13}],2:[function(require,module,exports){
+},{"./src/customize":17,"./src/gui":18,"./src/load":19,"./src/main":20,"./src/post-effect":21,"./src/sushi":22,"grimoirejs-fundamental/register":5,"grimoirejs-math/register":7,"grimoirejs/register":9,"regenerator-runtime/runtime":13}],2:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -36455,7 +36454,9 @@ new Vue({
     margin: 0.05,
     rotation: 20,
     activePicker: null,
-    attrs: {}
+    attrs: {},
+    href: document.location.href,
+    tipsVisibility: false
   },
   created: function created() {
     var _this = this;
@@ -36464,8 +36465,22 @@ new Vue({
       _this.cvs = gr('#canvas');
       _this.cvs('goml').on('asset-load-completed', _this.applyHash.bind(_this));
     });
+    window.addEventListener('hashchange', function () {
+      _this.location = document.location.href;
+    });
   },
 
+  computed: {
+    shareUrl: function shareUrl() {
+      var comp = {
+        url: document.location.href,
+        text: 'Sushi Pyon'
+      };
+      return 'https://twitter.com/share?' + Object.keys(comp).map(function (k) {
+        return k + '=' + encodeURIComponent(comp[k]);
+      }).join('&');
+    }
+  },
   methods: {
     onChangeColor: function onChangeColor(val) {
       this.color = val;
@@ -36500,6 +36515,13 @@ new Vue({
       document.location.hash = encodeURIComponent(Object.keys(this.attrs).map(function (k) {
         return k + '~' + _this3.attrs[k].toString().replace(/\~/g, '');
       }).join('~'));
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.tipsVisibility = true;
+      this.timer = setTimeout(function () {
+        _this3.tipsVisibility = false;
+      }, 5000);
     },
     applyHash: function applyHash() {
       var _this4 = this;
@@ -37472,40 +37494,9 @@ GeometryFactory.addType("sushi", {
   var geometry = new Geometry(gl);
   geometry.addAttributes(sg.interleave(), primitiveLayout);
   geometry.addIndex('default', sg.index);
-  geometry.addIndex('wireframe', sg.wireframe());
+  geometry.addIndex('wireframe', sg.wireframe(), WebGLRenderingContext.LINES);
   return geometry;
 });
 
-},{"grimoirejs-fundamental":4,"grimoirejs-math":6}],23:[function(require,module,exports){
-'use strict';
-
-var Vue = require('vue');
-
-new Vue({
-  el: '#twitter',
-  data: {
-    href: document.location.href
-  },
-  created: function created() {
-    var _this = this;
-
-    document.addEventListener('hashchange', function () {
-      _this.location = document.location.href;
-    });
-  },
-
-  computed: {
-    shareUrl: function shareUrl() {
-      var comp = {
-        url: document.location.href,
-        text: 'Sushi Pyon'
-      };
-      return 'https://twitter.com/share?' + Object.keys(comp).map(function (k) {
-        return k + '=' + encodeURIComponent(comp[k]);
-      }).join('&');
-    }
-  }
-});
-
-},{"vue":16}]},{},[1])
+},{"grimoirejs-fundamental":4,"grimoirejs-math":6}]},{},[1])
 //# sourceMappingURL=index.js.map

@@ -38,12 +38,26 @@ new Vue({
     rotation: 20,
     activePicker: null,
     attrs: {},
+    href: document.location.href,
+    tipsVisibility: false,
   },
   created() {
     gr(() => {
       this.cvs = gr('#canvas');
       this.cvs('goml').on('asset-load-completed', this.applyHash.bind(this));
     });
+    window.addEventListener('hashchange', () => {
+      this.location = document.location.href;
+    });
+  },
+  computed: {
+    shareUrl() {
+      const comp = {
+        url: document.location.href,
+        text: 'Sushi Pyon',
+      };
+      return `https://twitter.com/share?${Object.keys(comp).map((k) => `${k}=${encodeURIComponent(comp[k])}`).join('&')}`;
+    },
   },
   methods: {
     onChangeColor(val) {
@@ -75,6 +89,13 @@ new Vue({
       document.location.hash = encodeURIComponent(Object.keys(this.attrs).map((k) => {
         return `${k}~${this.attrs[k].toString().replace(/\~/g, '')}`;
       }).join('~'));
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.tipsVisibility = true;
+      this.timer = setTimeout(() => {
+        this.tipsVisibility = false;
+      }, 5000);
     },
     applyHash() {
       let obj = {};
