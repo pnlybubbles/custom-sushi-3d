@@ -54,7 +54,7 @@ new Vue({
     shareUrl() {
       const comp = {
         url: this.href,
-        text: 'My SUSHI 🍣',
+        text: 'My Custom SUSHI 🍣',
       };
       return `https://twitter.com/share?${Object.keys(comp).map((k) => `${k}=${encodeURIComponent(comp[k])}`).join('&')}`;
     },

@@ -36474,7 +36474,7 @@ new Vue({
     shareUrl: function shareUrl() {
       var comp = {
         url: this.href,
-        text: 'My SUSHI 🍣'
+        text: 'My Custom SUSHI 🍣'
       };
       return 'https://twitter.com/share?' + Object.keys(comp).map(function (k) {
         return k + '=' + encodeURIComponent(comp[k]);
