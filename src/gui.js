@@ -35,7 +35,7 @@ gr(() => {
   gui.add(general, 'mouse');
   gui.add(general, 'axis');
   gui.add(general, 'wireframe');
-  gui.add(general, 'download');
+  gui.add(general, 'capture');
   const vignetting = new Vignetting();
   const f1 = gui.addFolder('Vignetting');
   f1.add(vignetting, 'pass');
@@ -59,7 +59,7 @@ gr(() => {
   const hud = new Hud();
   const f4 = gui.addFolder('Hud');
   f4.add(hud, 'pass');
-  f4.add(hud, 'size', 0, 2);
+  f4.add(hud, 'size', 0, 4);
   f4.open();
   toggleDebug(debug);
 });
@@ -109,7 +109,7 @@ class General {
     return this._wireframe;
   }
 
-  download() {
+  capture() {
     const dataUrl = document.querySelector('#app canvas').toDataURL();
     const a = document.createElement('a');
     a.href = dataUrl;
@@ -239,7 +239,7 @@ class Aberration {
 class Hud {
   constructor() {
     this._pass = false;
-    this._size = 1.0;
+    this._size = 2.0;
   }
 
   set pass(v) {

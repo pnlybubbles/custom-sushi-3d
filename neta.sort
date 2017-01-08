@@ -63,21 +63,23 @@
     uniform float margin;
     @{default:"45"}
     uniform float rotation;
+    @{default:"0.01"}
+    uniform float blur;
     void main(){
       float c;
-      vec2 o = vec2(0.3333, 0.3333) + offset;
+      vec2 o = -offset - vec2(0.3333, 0.3333);
       mat2 r = rotate(radians(rotation));
       if (vTexCoord.x < 0.3333) {
-        c = drawStripe(r * vec2(0.3333, vTexCoord.y), o, width, margin, 0.01);
+        c = drawStripe(r * vec2(0.3333, vTexCoord.y), o, width, margin, blur);
       } else if (vTexCoord.x > 0.6666) {
-        c = drawStripe(r * vec2(0.6666, vTexCoord.y), o, width, margin, 0.01);
+        c = drawStripe(r * vec2(0.6666, vTexCoord.y), o, width, margin, blur);
       } else {
         if (vTexCoord.y < 0.3333) {
-          c = drawStripe(r * vec2(vTexCoord.x, 0.3333), o, width, margin, 0.01);
+          c = drawStripe(r * vec2(vTexCoord.x, 0.3333), o, width, margin, blur);
         } else if (vTexCoord.y > 0.6666) {
-          c = drawStripe(r * vec2(vTexCoord.x, 0.6666), o, width, margin, 0.01);
+          c = drawStripe(r * vec2(vTexCoord.x, 0.6666), o, width, margin, blur);
         } else {
-          c = drawStripe(r * vTexCoord, o, width, margin, 0.01);
+          c = drawStripe(r * vTexCoord, o, width, margin, blur);
         }
       }
       vec3 albedo = color.rgb * c + colorStripe.rgb * (1. - c);

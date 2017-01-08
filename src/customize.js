@@ -32,9 +32,9 @@ new Vue({
   data: {
     color: defaultColor,
     colorStripe: defaultColorStripe,
-    width: 0.01,
+    width: 3,
     offset: 0,
-    margin: 0.05,
+    margin: 5,
     rotation: 20,
     activePicker: null,
     attrs: {},
@@ -54,7 +54,7 @@ new Vue({
     shareUrl() {
       const comp = {
         url: this.href,
-        text: 'Sushi Pyon',
+        text: 'My SUSHI 🍣',
       };
       return `https://twitter.com/share?${Object.keys(comp).map((k) => `${k}=${encodeURIComponent(comp[k])}`).join('&')}`;
     },
@@ -82,8 +82,11 @@ new Vue({
       if (['width', 'offset', 'margin', 'rotation'].includes(k)) {
         v = parseFloat(v);
       }
-      this.cvs('.neta-material').setAttribute(k, v);
       this.attrs[k] = v;
+      if (['width', 'offset', 'margin'].includes(k)) {
+        v = v / 100;
+      }
+      this.cvs('.neta-material').setAttribute(k, v);
     },
     setHash() {
       document.location.hash = encodeURIComponent(Object.keys(this.attrs).map((k) => {

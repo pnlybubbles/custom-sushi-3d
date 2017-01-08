@@ -54,17 +54,17 @@
         <div class="section">
           <div class="label">Width</div>
           <input type="text" class="edit number" v-model="width" @change="setHash"></input>
-          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="width" @mouseup="setHash"></input>
+          <input type="range" min="0" max="100" step="1" class="edit slider" v-model="width" @mouseup="setHash"></input>
         </div>
         <div class="section">
           <div class="label">Margin</div>
           <input type="text" class="edit number" v-model="margin" @change="setHash"></input>
-          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="margin" @mouseup="setHash"></input>
+          <input type="range" min="0" max="100" step="1" class="edit slider" v-model="margin" @mouseup="setHash"></input>
         </div>
         <div class="section">
           <div class="label">Offset</div>
           <input type="text" class="edit number" v-model="offset" @change="setHash"></input>
-          <input type="range" min="0" max="0.3" step="0.01" class="edit slider" v-model="offset" @mouseup="setHash"></input>
+          <input type="range" min="0" max="100" step="1" class="edit slider" v-model="offset" @mouseup="setHash"></input>
         </div>
         <div class="section">
           <div class="label">Rotation</div>

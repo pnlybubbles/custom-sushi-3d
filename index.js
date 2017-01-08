@@ -36449,9 +36449,9 @@ new Vue({
   data: {
     color: defaultColor,
     colorStripe: defaultColorStripe,
-    width: 0.01,
+    width: 3,
     offset: 0,
-    margin: 0.05,
+    margin: 5,
     rotation: 20,
     activePicker: null,
     attrs: {},
@@ -36474,7 +36474,7 @@ new Vue({
     shareUrl: function shareUrl() {
       var comp = {
         url: this.href,
-        text: 'Sushi Pyon'
+        text: 'My SUSHI 🍣'
       };
       return 'https://twitter.com/share?' + Object.keys(comp).map(function (k) {
         return k + '=' + encodeURIComponent(comp[k]);
@@ -36506,8 +36506,11 @@ new Vue({
       if (['width', 'offset', 'margin', 'rotation'].includes(k)) {
         v = parseFloat(v);
       }
-      this.cvs('.neta-material').setAttribute(k, v);
       this.attrs[k] = v;
+      if (['width', 'offset', 'margin'].includes(k)) {
+        v = v / 100;
+      }
+      this.cvs('.neta-material').setAttribute(k, v);
     },
     setHash: function setHash() {
       var _this3 = this;
@@ -36625,7 +36628,7 @@ gr(function () {
   gui.add(general, 'mouse');
   gui.add(general, 'axis');
   gui.add(general, 'wireframe');
-  gui.add(general, 'download');
+  gui.add(general, 'capture');
   var vignetting = new Vignetting();
   var f1 = gui.addFolder('Vignetting');
   f1.add(vignetting, 'pass');
@@ -36649,7 +36652,7 @@ gr(function () {
   var hud = new Hud();
   var f4 = gui.addFolder('Hud');
   f4.add(hud, 'pass');
-  f4.add(hud, 'size', 0, 2);
+  f4.add(hud, 'size', 0, 4);
   f4.open();
   toggleDebug(debug);
 });
@@ -36664,8 +36667,8 @@ var General = function () {
   }
 
   _createClass(General, [{
-    key: 'download',
-    value: function download() {
+    key: 'capture',
+    value: function capture() {
       var dataUrl = document.querySelector('#app canvas').toDataURL();
       var a = document.createElement('a');
       a.href = dataUrl;
@@ -36850,7 +36853,7 @@ var Hud = function () {
     _classCallCheck(this, Hud);
 
     this._pass = false;
-    this._size = 1.0;
+    this._size = 2.0;
   }
 
   _createClass(Hud, [{

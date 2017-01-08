@@ -50,9 +50,9 @@
     <!-- <mesh geometry="come" material="#come-material" texture="tex.jpg"/> -->
     <!-- <mesh geometry="come" material="new(neta)" texture="tex.jpg" position="0,4,0"/> -->
     <object id="axis" scale="0">
-      <mesh geometry="come" color="red" position="1,0,0" scale="2,0.01,0.01" targetBuffer="wireframe"/>
-      <mesh geometry="come" color="green" position="0,1,0" scale="0.01,2,0.01" targetBuffer="wireframe"/>
-      <mesh geometry="come" color="blue" position="0,0,1" scale="0.01,0.01,2" targetBuffer="wireframe"/>
+      <mesh geometry="come" color="red" position="1,0,0" scale="2,0,0" targetBuffer="wireframe"/>
+      <mesh geometry="come" color="green" position="0,1,0" scale="0,2,0" targetBuffer="wireframe"/>
+      <mesh geometry="come" color="blue" position="0,0,1" scale="0,0,2" targetBuffer="wireframe"/>
     </object>
   </scene>
 </goml>
